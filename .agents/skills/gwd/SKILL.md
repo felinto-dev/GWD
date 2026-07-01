@@ -395,13 +395,18 @@ Do not leave a clarified item only in inbox. Move it to its canonical place or a
 
 Use for `/gwd-process`.
 
-1. Read `inbox.md`.
-2. Process top-down unless user gave a scope.
-3. For each item, decide destination or ask one focused question.
-4. Stop when blocked by missing info, user time limit, or inbox zero.
-5. Summarize moved items and remaining inbox count.
+`/gwd-process` is confirmation-first. It never categorizes, moves, or removes an inbox item automatically, even when the destination looks obvious.
 
-Do not batch-delete inbox content without preserving the moved decisions.
+1. Run the inbox query before reading full markdown when possible.
+2. Process top-down unless user gave a scope.
+3. Show one item at a time, or a small numbered batch if the user asks for batch triage.
+4. For each item, ask the user to choose or confirm the destination before editing any file.
+5. Include a recommended destination and the reason when useful, but treat it as a suggestion only.
+6. After user confirmation, update the destination file, then remove or mark the item in `inbox.md`.
+7. Stop when waiting for the user's answer, blocked by missing info, user time limit, or inbox zero.
+8. Summarize confirmed moves and remaining inbox count.
+
+Do not batch-delete inbox content without preserving the moved decisions. Do not infer permission from obvious wording; ask first.
 
 ## Project workflow
 
