@@ -4,20 +4,20 @@
 __pycache__/
 *.py[cod]
 
-# GWD personal workspace data
-inbox.md
-next-actions.md
-projects.md
-areas.md
-goals.md
-vision.md
-purpose.md
-horizons.md
-waiting-for.md
-someday-maybe.md
-calendar.md
-daily/
-reviews/
-projects/
-reference/
-archive/
+# GWD personal workspace data (root-level)
+/inbox.md
+/next-actions.md
+/projects.md
+/areas.md
+/goals.md
+/vision.md
+/purpose.md
+/horizons.md
+/waiting-for.md
+/someday-maybe.md
+/calendar.md
+/daily/
+/reviews/
+/projects/
+/reference/
+/archive/
