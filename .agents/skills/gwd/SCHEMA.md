@@ -184,11 +184,32 @@ active | paused | waiting | archived
 
 ## `someday-maybe.md`
 
-Use task lines when possible:
+Canonical incubator grouped by theme or area. Use one table per section.
 
 ```markdown
-- [ ] Write a book | captured 2026-06-30 | maybe 2027
+## Theme or Area
+
+| Item | Motivo | Próxima revisão | Logs |
+|---|---|---|---|
+| Write a book | Too early for active commitment | 2026-09-01 | 2026-07-01: user deferred for 2 months. Motivo: waiting for clearer market signal. |
 ```
+
+Fields:
+
+| Field | Required | Example |
+|---|---|---|
+| Item | yes | `Write a book` |
+| Motivo | recommended | `Not active this quarter` |
+| Próxima revisão | recommended | `2026-09-01` |
+| Logs | optional | `2026-07-01: user deferred for 2 months. Motivo: ...` |
+
+Rules:
+
+- Group ideas under `##` sections by theme, area, or product line.
+- Do not use a separate `Revisar em` cadence column.
+- `Próxima revisão` is a date for the next reconsideration.
+- `Logs` records why the item was deferred and for how long.
+- Escape literal pipes as `\|` inside cells.
 
 ## Horizons files
 

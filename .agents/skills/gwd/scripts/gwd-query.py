@@ -842,7 +842,25 @@ def query_waiting(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
 
 def query_someday(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     text = ctx.read_text("someday-maybe.md")
-    items = [i for i in parse_bullets(text, prefix="sm") if not i.get("done")]
+    table_rows = parse_markdown_table(text)
+    items: List[Dict[str, Any]] = []
+    for row in table_rows:
+        item = normalize_key(row, "Item")
+        if not item:
+            continue
+        items.append(
+            {
+                "id": f"sm-{row.get('_line', len(items) + 1)}",
+                "line": int(row.get("_line", "0") or 0),
+                "title": item,
+                "reason": normalize_key(row, "Motivo", "Reason"),
+                "next_review": normalize_key(row, "Próxima revisão", "Proxima revisao", "Next review"),
+                "logs": normalize_key(row, "Logs"),
+                "raw": row.get("_raw", ""),
+            }
+        )
+    if not items:
+        items = [i for i in parse_bullets(text, prefix="sm") if not i.get("done")]
     result = base_result("someday", ctx)
     result.update(
         {

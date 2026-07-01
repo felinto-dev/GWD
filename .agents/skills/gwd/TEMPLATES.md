@@ -207,8 +207,11 @@ Nota:
 
 Ideas and non-committed outcomes.
 
-## Review monthly
-- [ ] Idea text | captured YYYY-MM-DD | note
+## Theme or Area
+
+| Item | Motivo | Próxima revisão | Logs |
+|---|---|---|---|
+| Idea text | Why it is not active now | YYYY-MM-DD | YYYY-MM-DD: user deferred for 1 month. Motivo: reason/context. |
 ```
 
 ### `calendar.md`
