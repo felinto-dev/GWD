@@ -2,6 +2,8 @@
 
 Reviews keep the system trusted. They are not bureaucracy; they are how you regain control and perspective.
 
+Before reading full review files, use `scripts/gwd-query review --root . --type <daily|weekly|monthly|quarterly>` and `scripts/gwd-query horizons --root .` for compact summaries.
+
 ## The review stack
 
 ```text

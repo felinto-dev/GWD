@@ -2,6 +2,8 @@
 
 Use these templates as defaults. Keep user data concise. Prefer appends and small edits.
 
+Keep these formats parseable by `scripts/gwd-query`; see `SCHEMA.md` before changing table columns or task-line structure.
+
 ## Base files
 
 ### `inbox.md`

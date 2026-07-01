@@ -80,6 +80,39 @@ Use this structure when setting up or maintaining the system:
 
 If `inbox.md` and the base GWD files are missing from the workspace root and the user is not running setup, offer `/gwd-setup` or capture the request in conversation without writing.
 
+## Token-saving queries
+
+Use bundled scripts before reading large GWD markdown files. This keeps context small as the system grows.
+
+Default command from the workspace root:
+
+```text
+.agents/skills/gwd/scripts/gwd-query <mode> --root . --format json
+```
+
+Prefer scripts for read-only summaries:
+
+| Need | Query |
+|---|---|
+| overall status | `gwd-query status --root .` |
+| inbox items | `gwd-query inbox --root . --limit 20` |
+| next actions | `gwd-query next --root . --context @computer --time 30 --energy low` |
+| project health | `gwd-query projects --root . --missing-next` |
+| horizons map | `gwd-query horizons --root .` |
+| review summary | `gwd-query review --root . --type weekly` |
+| alignment | `gwd-query align --root . --item "..."` |
+| waiting-for | `gwd-query waiting --root . --due` |
+| someday/maybe | `gwd-query someday --root . --limit 20` |
+
+Read full markdown only when:
+
+- editing that file;
+- script returns warnings or ambiguity;
+- user asks for full detail;
+- destructive/archive/reset confirmation needs exact file contents.
+
+Scripts are read-only. They never modify user data. See `SCHEMA.md` for parseable markdown conventions.
+
 ## Slash command routing
 
 | Command | Mode |

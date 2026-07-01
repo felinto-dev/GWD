@@ -85,6 +85,21 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 `-- reference/
 ```
 
+## Scripts token-saver
+
+A skill inclui scripts read-only para consultar o sistema sem carregar arquivos grandes no contexto.
+
+```text
+.agents/skills/gwd/scripts/gwd-query status --root . --format json
+.agents/skills/gwd/scripts/gwd-query next --root . --context @computer --time 30
+.agents/skills/gwd/scripts/gwd-query horizons --root .
+.agents/skills/gwd/scripts/gwd-query review --root . --type weekly
+```
+
+Regra: usar `gwd-query` para resumos; ler markdown completo so antes de editar, quando houver ambiguidades, ou quando voce pedir detalhes integrais.
+
+Padrao dos arquivos: `SCHEMA.md`.
+
 ## Setup
 
 Cria a base do sistema e inicia automaticamente o primeiro sweep.

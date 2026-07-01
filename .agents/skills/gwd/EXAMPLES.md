@@ -217,3 +217,63 @@ Recommendation:
 - limitar a 2 blocos por semana
 - next action: escrever roteiro do primeiro video (45m)
 ```
+
+
+## 8. Token-saving next query
+
+User:
+
+```text
+/gwd-next @computer 30m energia baixa
+```
+
+Assistant internal first step:
+
+```text
+.agents/skills/gwd/scripts/gwd-query next --root . --context @computer --time 30 --energy low --format json
+```
+
+Assistant:
+
+```markdown
+Next -> agora
+
+Recommended: na:24 because it matches context/time/energy.
+
+1. P1 @computer revisar proposta (25m) -> Client project
+2. P2 @computer limpar inbox de notas (15m) -> Admin
+
+Comecar por qual acao?
+```
+
+## 9. Token-saving weekly review
+
+User:
+
+```text
+/gwd-weekly
+```
+
+Assistant internal first step:
+
+```text
+.agents/skills/gwd/scripts/gwd-query review --root . --type weekly --format json
+```
+
+Assistant:
+
+```markdown
+Review -> weekly
+
+Script summary:
+- inbox_open: 12
+- projects_missing_next: 3
+- waiting_followups_due: 2
+
+Recommended order:
+1. `/gwd-process inbox`
+2. fix projects missing next action
+3. follow up waiting items
+
+Comecar pelo inbox?
+```
