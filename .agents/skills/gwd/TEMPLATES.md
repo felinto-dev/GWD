@@ -166,6 +166,43 @@ H0 : clear|noisy|missing
 User-written notes to preserve across refreshes.
 ```
 
+
+### `gwd-memory.md`
+
+```markdown
+# GWD Memory
+
+Operational memory for preferences, decisions, patterns, and workflow friction. Do not store tasks or daily logs here.
+
+## Ativas
+
+### mem-YYYYMMDD-001 - Short title
+
+Tipo: decisao operacional
+Criada em: YYYY-MM-DD
+Escopo: inbox, projetos, reviews
+Status: ativa
+Esquecer em: objective condition for when this memory stops being useful
+
+Nota:
+- Practical rule or observation to apply in future GWD decisions.
+
+### mem-20260701-001 - Transicao Super Downloads API -> Splita
+
+Tipo: decisao operacional
+Criada em: 2026-07-01
+Escopo: inbox, projetos, triagem de features
+Status: ativa
+Esquecer em: Super Downloads API nao estiver mais ativo ou a migracao para Splita estiver concluida
+
+Nota:
+- Ideias antigas do Super Downloads API devem ser reavaliadas para Splita.
+- Features futuras do Splita devem ir para backlog SDD quando ele for canonico.
+- GWD mantem compromisso, foco e proximas acoes atuais, sem duplicar backlog tecnico.
+
+## Arquivadas
+```
+
 ### `waiting-for.md`
 
 ```markdown

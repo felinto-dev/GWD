@@ -26,6 +26,7 @@ BASE_FILES = [
     "vision.md",
     "purpose.md",
     "horizons.md",
+    "gwd-memory.md",
     "waiting-for.md",
     "someday-maybe.md",
     "calendar.md",
@@ -615,6 +616,70 @@ def query_horizons(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     return result
 
 
+
+def parse_memory(ctx: Ctx) -> List[Dict[str, Any]]:
+    text = ctx.read_text("gwd-memory.md")
+    items: List[Dict[str, Any]] = []
+    current: Optional[Dict[str, Any]] = None
+    section = "active"
+    in_note = False
+    for lineno, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.lower().startswith("## arquiv"):
+            section = "archived"
+        elif stripped.lower().startswith("## ativ"):
+            section = "active"
+        m = re.match(r"^###\s+(mem-\d{8}-\d{3})\s+-\s+(.+?)\s*$", stripped)
+        if m:
+            current = {
+                "id": m.group(1),
+                "line": lineno,
+                "title": m.group(2),
+                "section": section,
+                "status": "arquivada" if section == "archived" else "ativa",
+                "note": [],
+            }
+            items.append(current)
+            in_note = False
+            continue
+        if not current:
+            continue
+        if stripped.lower().startswith("nota:"):
+            in_note = True
+            continue
+        field = re.match(r"^(Tipo|Criada em|Escopo|Status|Esquecer em):\s*(.*)$", stripped, re.I)
+        if field:
+            key = field.group(1).lower()
+            key = key.replace("criada em", "created").replace("esquecer em", "forget_when")
+            key = key.replace("tipo", "type").replace("escopo", "scope").replace("status", "status")
+            current[key] = field.group(2).strip()
+            in_note = False
+            continue
+        if in_note and stripped.startswith("-"):
+            current.setdefault("note", []).append(stripped[1:].strip())
+    return items
+
+
+def query_memory(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
+    items = parse_memory(ctx)
+    active = [i for i in items if i.get("status", "").lower() == "ativa"]
+    archived = [i for i in items if i.get("status", "").lower() == "arquivada"]
+    with_forget = [i for i in active if i.get("forget_when")]
+    result = base_result("memory", ctx)
+    result.update(
+        {
+            "counts": {
+                "total": len(items),
+                "active": len(active),
+                "archived": len(archived),
+                "active_with_forget_when": len(with_forget),
+            },
+            "items": items[: args.limit],
+            "next_command": "/gwd-review monthly" if with_forget else "/gwd-capture",
+        }
+    )
+    return result
+
 def query_review(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     review_type = args.type or "weekly"
     inbox = parse_inbox(ctx)
@@ -622,6 +687,9 @@ def query_review(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     projects = parse_projects(ctx, args.stale_days)
     waiting = parse_waiting(ctx)
     hstatus = horizon_status(ctx)
+    memory_items = parse_memory(ctx) if review_type == "monthly" else []
+    memory_active = [i for i in memory_items if i.get("status", "").lower() == "ativa"]
+    memory_forget = [i for i in memory_active if i.get("forget_when")]
     missing_next = [p for p in projects if "missing_next" in p.get("flags", [])]
     result = base_result("review", ctx)
     result.update(
@@ -637,6 +705,14 @@ def query_review(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
             "horizons": hstatus,
         }
     )
+    if review_type == "monthly":
+        result["memory"] = {
+            "active": len(memory_active),
+            "active_with_forget_when": len(memory_forget),
+            "items_to_check": memory_forget[: args.limit],
+            "instruction": "Check whether each Esquecer em condition has been reached; archive/remove only after confirmation.",
+        }
+
     if review_type == "daily":
         result["next_command"] = "/gwd-review daily"
     elif review_type == "monthly":
@@ -930,7 +1006,7 @@ def output_md(result: Dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Query GWD markdown files without reading them into the agent context.")
-    parser.add_argument("mode", choices=["status", "summary", "inbox", "next", "projects", "horizons", "review", "align", "waiting", "someday"])
+    parser.add_argument("mode", choices=["status", "summary", "inbox", "next", "projects", "horizons", "memory", "review", "align", "waiting", "someday"])
     parser.add_argument("extra", nargs="*", help="extra words for align/item queries")
     parser.add_argument("--root", default=".", help="GWD workspace root")
     parser.add_argument("--format", choices=["json", "md", "ndjson"], default="json")
@@ -958,6 +1034,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "next": query_next,
         "projects": query_projects,
         "horizons": query_horizons,
+        "memory": query_memory,
         "review": query_review,
         "align": query_align,
         "waiting": query_waiting,

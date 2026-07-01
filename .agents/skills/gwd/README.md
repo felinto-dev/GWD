@@ -75,6 +75,7 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 |-- vision.md                 # H4 visao 3-5 anos
 |-- purpose.md                # H5 proposito e principios
 |-- horizons.md               # mapa geral
+|-- gwd-memory.md             # memoria operacional
 |-- waiting-for.md
 |-- someday-maybe.md
 |-- calendar.md

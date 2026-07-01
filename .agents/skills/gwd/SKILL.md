@@ -62,6 +62,7 @@ Use this structure when setting up or maintaining the system:
 |-- vision.md
 |-- purpose.md
 |-- horizons.md
+|-- gwd-memory.md
 |-- waiting-for.md
 |-- someday-maybe.md
 |-- calendar.md
@@ -95,6 +96,7 @@ Canonical files are the source of truth. Derived files are dashboards, logs, or 
 | `vision.md` | canonical vision | `/gwd-vision`, quarterly review |
 | `purpose.md` | canonical principles | `/gwd-purpose`, quarterly review |
 | `horizons.md` | derived snapshot | setup finalization, `/gwd-horizons`, `/gwd-align all`, monthly/quarterly review, any significant H0-H5 change |
+| `gwd-memory.md` | canonical operating memory | confirmed preferences, decisions, patterns, and workflow friction; monthly review checks `Esquecer em` conditions |
 | `waiting-for.md` | canonical waiting list | `/gwd-waiting`, delegated item, follow-up resolved, weekly review |
 | `someday-maybe.md` | canonical incubator | `/gwd-someday`, deferred item, monthly review |
 | `calendar.md` | canonical hard landscape | date/time-specific item discovered in process/sweep |
@@ -129,6 +131,7 @@ Prefer scripts for read-only summaries:
 | next actions | `gwd-query next --root . --context @computer --time 30 --energy low` |
 | project health | `gwd-query projects --root . --missing-next` |
 | horizons map | `gwd-query horizons --root .` |
+| operating memory | `gwd-query memory --root .` |
 | review summary | `gwd-query review --root . --type weekly` |
 | alignment | `gwd-query align --root . --item "..."` |
 | waiting-for | `gwd-query waiting --root . --due` |
@@ -142,6 +145,23 @@ Read full markdown only when:
 - destructive/archive/reset confirmation needs exact file contents.
 
 Scripts are read-only. They never modify user data. See `SCHEMA.md` for parseable markdown conventions.
+
+
+## GWD memory workflow
+
+Use `gwd-memory.md` for operational memory: preferences, decisions, recurring patterns, and workflow friction that should guide future triage. Do not store tasks, project backlogs, daily logs, or immutable history there.
+
+Memory entries need explicit user confirmation before writing. Each active entry should include `Esquecer em`, an objective condition for when the memory stops being useful.
+
+During `/gwd-review monthly`, review `gwd-memory.md` first when it exists:
+
+1. Read active memories.
+2. Check each `Esquecer em` condition against current reality.
+3. If the condition is met, recommend archive or removal.
+4. Remove only after confirmation; archive under `## Arquivadas` when historical context may remain useful.
+5. Keep valid memories unchanged.
+
+Daily logs are immutable and do not participate in memory expiry.
 
 ## Slash command routing
 

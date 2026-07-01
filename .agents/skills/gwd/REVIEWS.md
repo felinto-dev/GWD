@@ -187,13 +187,17 @@ Checklist:
    - Which goals moved?
    - Which goals are stale?
    - Which goals need projects?
-3. Run alignment:
+3. Review `gwd-memory.md` when it exists:
+   - Check active memories before planning the next month.
+   - For each `Esquecer em`, decide whether the condition has been reached.
+   - Remove or archive expired memories only after confirmation; keep valid memories unchanged.
+4. Run alignment:
    - Use `/gwd-align all` or align top active projects.
    - Move weakly aligned projects to paused/someday when appropriate.
-4. Check capacity:
+5. Check capacity:
    - Time, energy, money, attention.
    - Reduce active load if reality changed.
-5. Decide next month:
+6. Decide next month:
    - 1-3 goals/outcomes.
    - Projects to continue, pause, start, stop.
 
@@ -209,6 +213,10 @@ Goals status:
 - on track: ...
 - at risk: ...
 - stale: ...
+
+Memory expiry:
+- keep: ...
+- archive/remove after confirmation: ...
 
 Alignment findings:
 - aligned: ...

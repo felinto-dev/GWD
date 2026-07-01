@@ -23,6 +23,7 @@ goals.md
 vision.md
 purpose.md
 horizons.md
+gwd-memory.md
 waiting-for.md
 someday-maybe.md
 calendar.md
@@ -76,6 +77,46 @@ Rules:
 - If an item takes less than 2 minutes, do it now and log it instead of keeping it in inbox.
 - Escape literal pipes as `\|` inside cells.
 - Do not classify here unless user explicitly asks.
+
+
+## `gwd-memory.md`
+
+Canonical operating memory. Use for confirmed preferences, decisions, recurring patterns, and workflow friction that should guide future GWD decisions. Do not store tasks, product backlog items, or daily logs here.
+
+Entry format:
+
+```markdown
+### mem-YYYYMMDD-001 - Short title
+
+Tipo: decisao operacional
+Criada em: YYYY-MM-DD
+Escopo: inbox, projetos, reviews
+Status: ativa
+Esquecer em: objective condition
+
+Nota:
+- Memory text.
+```
+
+Fields:
+
+| Field | Required | Example |
+|---|---|---|
+| ID | yes | `mem-20260701-001` |
+| Tipo | yes | `decisao operacional` |
+| Criada em | yes | `2026-07-01` |
+| Escopo | recommended | `inbox, projetos` |
+| Status | yes | `ativa`, `arquivada` |
+| Esquecer em | recommended | `quando o projeto X for concluido` |
+| Nota | yes | practical guidance |
+
+Rules:
+
+- Add memories only after user confirmation.
+- `Esquecer em` is an expiry condition, not a review cadence.
+- Monthly review checks whether each active memory's expiry condition has been met.
+- Remove only after confirmation; archive under `## Arquivadas` when context may remain useful.
+- Daily logs are immutable and separate from memory expiry.
 
 ## `next-actions.md`
 
