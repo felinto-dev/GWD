@@ -43,7 +43,7 @@ H0 and H1 create control. H2-H5 create perspective. The system needs both.
 - One commitment lives in one canonical place. Dashboards summarize; they do not duplicate tasks.
 - Prefer appending to existing files. Before overwriting, deleting, archiving, or resetting, inspect the target and ask for exact confirmation.
 - If a request is vague, capture first; clarify later.
-- Preserve the user's wording in captures. Do not over-process raw inbox input.
+- Preserve the user's wording in inbox title and description. Do not over-process raw captures.
 - During setup and sweep, inspect useful local reference files before asking questions.
 - For each setup/sweep question, provide a recommended answer and the reason.
 - Run alignment automatically when creating/reviewing projects and during monthly/quarterly reviews.
@@ -351,16 +351,18 @@ Recommendation:
 
 Use for `/gwd-capture` and any raw input.
 
-- Add each item as one inbox bullet with date/time if writing to `inbox.md`.
-- Preserve original text.
-- Split obvious multi-item lists into separate bullets.
+- Add each item as one inbox entry with date/time and title if writing to `inbox.md`.
+- Use the first short phrase as the title; put extra context in an indented `Descricao:` line.
+- Preserve original wording across title and description.
+- Split obvious multi-item lists into separate entries.
 - Do not decide project/context unless the user asks or the item is unambiguous.
 - If writing is not possible, return a capture block the user can paste.
 
 Capture format:
 
 ```markdown
-- [ ] YYYY-MM-DD HH:MM | raw item text
+- [ ] YYYY-MM-DD HH:MM | Titulo da captura
+  Descricao: detalhes opcionais preservados do pedido original
 ```
 
 ## Clarify workflow
@@ -399,7 +401,7 @@ Use for `/gwd-process`.
 
 1. Run the inbox query before reading full markdown when possible.
 2. Process top-down unless user gave a scope.
-3. Show one item at a time, or a small numbered batch if the user asks for batch triage.
+3. Show one item at a time, including title and description when present, or a small numbered batch if the user asks for batch triage.
 4. For each item, ask the user to choose or confirm the destination before editing any file.
 5. Include a recommended destination and the reason when useful, but treat it as a suggestion only.
 6. After user confirmation, update the destination file, then remove or mark the item in `inbox.md`.

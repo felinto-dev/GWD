@@ -52,13 +52,24 @@ Fields:
 Canonical capture:
 
 ```markdown
-- [ ] YYYY-MM-DD HH:MM | raw item text
+- [ ] YYYY-MM-DD HH:MM | Title
+  Descricao: optional detail preserved from the original capture
 ```
+
+Fields:
+
+| Field | Required | Example |
+|---|---|---|
+| checkbox | yes | `[ ]`, `[x]` |
+| stamp | recommended | `2026-06-30 09:15` |
+| title | yes | `Responder Ana` |
+| description | optional | `Ela pediu retorno sobre contrato e prazo.` |
 
 Rules:
 
-- Preserve original wording.
-- One capture per line.
+- Preserve original wording across title and description.
+- One capture entry per item.
+- Keep the description indented under its title.
 - Do not classify here unless user explicitly asks.
 
 ## `next-actions.md`

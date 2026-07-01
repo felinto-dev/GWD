@@ -13,7 +13,8 @@ Keep these formats parseable by `scripts/gwd-query`; see `SCHEMA.md` before chan
 
 Raw captures. Process top-down. Preserve original wording.
 
-- [ ] YYYY-MM-DD HH:MM | Example capture
+- [ ] YYYY-MM-DD HH:MM | Example title
+  Descricao: optional details, context, links, or notes
 ```
 
 ### `next-actions.md`
@@ -294,7 +295,7 @@ Tomorrow first move:
 Capture -> N item(s).
 
 Added:
-- item 1
+- item 1 - description if present
 - item 2
 
 Next -> `/gwd-process`.

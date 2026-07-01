@@ -43,8 +43,9 @@ HORIZON_FILES = {
 TASK_RE = re.compile(r"^\s*-\s*\[(?P<status>[^\]]*)\]\s*(?P<rest>.+?)\s*$")
 INBOX_RE = re.compile(
     r"^\s*-\s*\[(?P<status>[^\]]*)\]\s*"
-    r"(?P<stamp>\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2})?)\s*\|\s*(?P<text>.+?)\s*$"
+    r"(?P<stamp>\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2})?)\s*\|\s*(?P<title>.+?)\s*$"
 )
+DESCRIPTION_LABEL_RE = re.compile("^(?:-\\s*)?(?:description|descricao|descri\\u00e7\\u00e3o)\\s*:\\s*", re.I)
 PRIORITY_RE = re.compile(r"\b(P[0-2])\b")
 CONTEXT_RE = re.compile(r"(^|\s)(@[-A-Za-z0-9_./]+)\b")
 MINUTES_RE = re.compile(r"\((?P<num>\d+)\s*(?:m|min|minutes?)\)", re.I)
@@ -199,13 +200,37 @@ def parse_bullets(text: str, prefix: str = "item") -> List[Dict[str, Any]]:
     return items
 
 
+def collect_description(lines: List[str], start: int) -> Tuple[Optional[str], int]:
+    desc_lines: List[str] = []
+    i = start
+    while i < len(lines):
+        line = lines[i]
+        if not line.strip():
+            break
+        if not (line.startswith(" ") or line.startswith("\t")):
+            break
+        desc_lines.append(line.strip())
+        i += 1
+    if not desc_lines:
+        return None, start
+    desc_lines[0] = DESCRIPTION_LABEL_RE.sub("", desc_lines[0]).strip()
+    description = "\n".join(line for line in desc_lines if line).strip()
+    return description or None, i
+
+
 def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
     text = ctx.read_text("inbox.md")
     items: List[Dict[str, Any]] = []
-    for line_no, line in enumerate(text.splitlines(), start=1):
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        line_no = i + 1
+        line = lines[i]
         m = INBOX_RE.match(line)
         if m:
             status = m.group("status").strip()
+            description, next_i = collect_description(lines, i + 1)
+            title = m.group("title").strip()
             items.append(
                 {
                     "id": f"inbox:{line_no}",
@@ -213,15 +238,24 @@ def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
                     "status": status or " ",
                     "done": status.lower() == "x",
                     "stamp": m.group("stamp"),
-                    "text": m.group("text").strip(),
+                    "title": title,
+                    "description": description,
+                    "text": title,
                     "raw": line.strip(),
                 }
             )
+            i = next_i
             continue
         task = parse_task_line(line, line_no, prefix="inbox")
         if task:
+            description, next_i = collect_description(lines, i + 1)
             task["stamp"] = None
+            task["title"] = task.get("text")
+            task["description"] = description
             items.append(task)
+            i = next_i
+            continue
+        i += 1
     return items
 
 

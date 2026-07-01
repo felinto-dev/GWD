@@ -54,6 +54,10 @@ Added:
 - ideia app receitas
 - pagar IPVA
 
+Inbox format:
+- `[ ] YYYY-MM-DD HH:MM | titulo`
+- `  Descricao: detalhes opcionais`
+
 Next -> `/gwd-process`.
 ```
 
