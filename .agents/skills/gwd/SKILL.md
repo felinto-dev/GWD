@@ -41,7 +41,7 @@ H0 and H1 create control. H2-H5 create perspective. The system needs both.
 
 - Store state in visible markdown files at the workspace root when writing is needed.
 - One commitment lives in one canonical place. Dashboards summarize; they do not duplicate tasks.
-- Prefer appending to existing files. Before overwriting, deleting, archiving, or resetting, inspect the target and ask for exact confirmation.
+- Prefer inserting new rows in date-descending order instead of appending. Before overwriting, deleting, archiving, or resetting, inspect the target and ask for exact confirmation.
 - If a request is vague, capture first; clarify later.
 - Preserve the user's wording in inbox title and description. Do not over-process raw captures.
 - During setup and sweep, inspect useful local reference files before asking questions.
@@ -147,6 +147,16 @@ Read full markdown only when:
 
 Scripts are read-only. They never modify user data. See `SCHEMA.md` for parseable markdown conventions.
 
+## List ordering
+
+Any canonical list with an added/created date column must stay sorted newest first by that date. This applies to `inbox.md`, `next-actions.md`, `projects.md`, `waiting-for.md`, `someday-maybe.md`, `calendar.md`, and project task lists when they store added dates.
+
+When adding or moving an item:
+
+- Preserve existing headings/sections.
+- Insert the row above older rows in the same table/section, not at the bottom.
+- If the destination table has no added/created date column, add one only when the workflow schema requires it; otherwise keep the existing format and choose the nearest date column available.
+- If a list is already out of order, fix only the affected table/section you edit unless the user asks for a broader cleanup.
 
 ## GWD memory workflow
 
@@ -521,6 +531,22 @@ If the task cannot be identified, ask which item or provide a short candidate li
 Use `/gwd-waiting` for things delegated, ordered, requested, or blocked on others. Each item needs owner/source, date, follow-up trigger.
 
 Use `/gwd-someday` for ideas, future possibilities, and non-committed outcomes. Review weekly lightly and monthly more deeply.
+
+Someday/maybe table format:
+
+```markdown
+| ID | Added | Título | Descrição | Próxima revisão | Blockers |
+|---|---|---|---|---|---|
+| sm-YYYYMMDD-NNN | YYYY-MM-DD HH:MM | Ideia | detalhes opcionais | YYYY-MM-DD | - [ ] blocker opcional |
+```
+
+When adding or moving anything to `someday-maybe.md`:
+
+- Always include `Added` with the local date and time when the idea entered someday/maybe.
+- Always ask the user for the estimated next review date before writing the row, even when a default seems obvious.
+- Suggest a review date with a reason, but wait for confirmation or a user-provided date.
+- Keep someday/maybe rows sorted newest first by `Added` within the relevant section.
+- If an existing someday/maybe table is missing `Added`, migrate the header for the table you edit and add best-known dates for existing rows when available; otherwise leave unknown existing dates blank and preserve their order below dated newer rows.
 
 ## Review workflows
 
