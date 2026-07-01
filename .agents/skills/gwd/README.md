@@ -67,7 +67,7 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 
 ```text
 ./
-|-- inbox.md                  # capturas com titulo e descricao opcional
+|-- inbox.md                  # tabela de capturas com titulo e descricao
 |-- next-actions.md           # H0 proximas acoes
 |-- projects.md               # H1 projetos
 |-- areas.md                  # H2 areas de foco

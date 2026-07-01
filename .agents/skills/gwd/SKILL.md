@@ -351,18 +351,22 @@ Recommendation:
 
 Use for `/gwd-capture` and any raw input.
 
-- Add each item as one inbox entry with date/time and title if writing to `inbox.md`.
-- Use the first short phrase as the title; put extra context in an indented `Descricao:` line.
+- Add each item as one row in the `inbox.md` table.
+- Use the first short phrase as `Title`; put extra context in `Description`.
 - Preserve original wording across title and description.
-- Split obvious multi-item lists into separate entries.
+- Split obvious multi-item lists into separate rows.
+- Do not add checklist/status columns to inbox; inbox items are unresolved, not tasks to complete.
+- If an item takes less than 2 minutes, do it now and log it instead of keeping it in inbox.
+- Escape literal pipes as `\|` inside table cells.
 - Do not decide project/context unless the user asks or the item is unambiguous.
 - If writing is not possible, return a capture block the user can paste.
 
 Capture format:
 
 ```markdown
-- [ ] YYYY-MM-DD HH:MM | Titulo da captura
-  Descricao: detalhes opcionais preservados do pedido original
+| Date | Title | Description |
+|---|---|---|
+| YYYY-MM-DD HH:MM | Titulo da captura | detalhes opcionais preservados do pedido original |
 ```
 
 ## Clarify workflow
@@ -404,7 +408,7 @@ Use for `/gwd-process`.
 3. Show one item at a time, including title and description when present, or a small numbered batch if the user asks for batch triage.
 4. For each item, ask the user to choose or confirm the destination before editing any file.
 5. Include a recommended destination and the reason when useful, but treat it as a suggestion only.
-6. After user confirmation, update the destination file, then remove or mark the item in `inbox.md`.
+6. After user confirmation, update the destination file, then remove the row from `inbox.md`; do not mark inbox rows as done.
 7. Stop when waiting for the user's answer, blocked by missing info, user time limit, or inbox zero.
 8. Summarize confirmed moves and remaining inbox count.
 
@@ -479,10 +483,11 @@ Do not create a new planning project when the user needs to act. Make the next m
 
 Use for `/gwd-done`.
 
-- Mark the task done in its canonical file when identifiable.
-- Add a timestamped daily log entry.
-- If it was a project action, propose or create the next action.
-- If it completes the project, suggest archive flow.
+- Add a timestamped daily log entry for every completed action.
+- If it was a 2-minute inbox item, log completion and remove it from `inbox.md`.
+- If it was an open next action, remove it from `next-actions.md`; do not keep completed actions there.
+- If it was a project action, move/record it under the project's Done section when present, then propose or create the next action.
+- If it completes the project, update `projects.md`; archive `projects/active/<slug>/` only after confirmation.
 - Summarize briefly.
 
 If the task cannot be identified, ask which item or provide a short candidate list.

@@ -49,27 +49,29 @@ Fields:
 
 ## `inbox.md`
 
-Canonical capture:
+Canonical capture table:
 
 ```markdown
-- [ ] YYYY-MM-DD HH:MM | Title
-  Descricao: optional detail preserved from the original capture
+| Date | Title | Description |
+|---|---|---|
+| YYYY-MM-DD HH:MM | Title | Optional detail preserved from the original capture |
 ```
 
 Fields:
 
 | Field | Required | Example |
 |---|---|---|
-| checkbox | yes | `[ ]`, `[x]` |
-| stamp | recommended | `2026-06-30 09:15` |
-| title | yes | `Responder Ana` |
-| description | optional | `Ela pediu retorno sobre contrato e prazo.` |
+| Date | recommended | `2026-06-30 09:15` |
+| Title | yes | `Responder Ana` |
+| Description | optional | `Ela pediu retorno sobre contrato e prazo.` |
 
 Rules:
 
 - Preserve original wording across title and description.
-- One capture entry per item.
-- Keep the description indented under its title.
+- One capture entry per table row.
+- Do not track completion status in inbox; processed items leave the table.
+- If an item takes less than 2 minutes, do it now and log it instead of keeping it in inbox.
+- Escape literal pipes as `\|` inside cells.
 - Do not classify here unless user explicitly asks.
 
 ## `next-actions.md`

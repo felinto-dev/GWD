@@ -97,6 +97,32 @@ def base_result(mode: str, ctx: Ctx) -> Dict[str, Any]:
     }
 
 
+def split_markdown_row(line: str) -> List[str]:
+    value = line.strip()
+    if value.startswith("|"):
+        value = value[1:]
+    if value.endswith("|"):
+        value = value[:-1]
+    cells: List[str] = []
+    buf: List[str] = []
+    escaped = False
+    for ch in value:
+        if escaped:
+            buf.append(ch if ch == "|" else "\\" + ch)
+            escaped = False
+        elif ch == "\\":
+            escaped = True
+        elif ch == "|":
+            cells.append("".join(buf).strip())
+            buf = []
+        else:
+            buf.append(ch)
+    if escaped:
+        buf.append("\\")
+    cells.append("".join(buf).strip())
+    return cells
+
+
 def parse_markdown_table(text: str) -> List[Dict[str, str]]:
     rows: List[Dict[str, str]] = []
     lines = text.splitlines()
@@ -113,15 +139,16 @@ def parse_markdown_table(text: str) -> List[Dict[str, str]]:
         if not (sep.startswith("|") and set(sep.replace("|", "").replace("-", "").replace(":", "").strip()) == set()):
             i += 1
             continue
-        headers = [c.strip() for c in line.strip("|").split("|")]
+        headers = split_markdown_row(line)
         i += 2
         while i < len(lines):
             row_line = lines[i].strip()
             if not (row_line.startswith("|") and row_line.endswith("|")):
                 break
-            cells = [c.strip() for c in row_line.strip("|").split("|")]
+            cells = split_markdown_row(row_line)
             row = {headers[j]: cells[j] if j < len(cells) else "" for j in range(len(headers))}
             row["_line"] = str(i + 1)
+            row["_raw"] = row_line
             rows.append(row)
             i += 1
     return rows
@@ -218,8 +245,33 @@ def collect_description(lines: List[str], start: int) -> Tuple[Optional[str], in
     return description or None, i
 
 
-def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
-    text = ctx.read_text("inbox.md")
+def parse_inbox_table(text: str) -> List[Dict[str, Any]]:
+    rows = parse_markdown_table(text)
+    items: List[Dict[str, Any]] = []
+    for row in rows:
+        title = normalize_key(row, "Title", "Titulo", "T\u00edtulo", "Item", "Task", "Tarefa")
+        if not title or title.lower() in {"title", "titulo", "t\u00edtulo", "item", "task", "tarefa"}:
+            continue
+        stamp = normalize_key(row, "Date", "Data", "Captured", "Capturado", "Stamp")
+        description = normalize_key(row, "Description", "Descricao", "Descri\u00e7\u00e3o", "Notes", "Notas") or None
+        line = int(row.get("_line", "0") or 0)
+        items.append(
+            {
+                "id": f"inbox:{line}",
+                "line": line,
+                "status": " ",
+                "done": False,
+                "stamp": stamp or None,
+                "title": title,
+                "description": description,
+                "text": title,
+                "raw": row.get("_raw", ""),
+            }
+        )
+    return items
+
+
+def parse_inbox_bullets(text: str) -> List[Dict[str, Any]]:
     items: List[Dict[str, Any]] = []
     lines = text.splitlines()
     i = 0
@@ -257,6 +309,14 @@ def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
             continue
         i += 1
     return items
+
+
+def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
+    text = ctx.read_text("inbox.md")
+    table_items = parse_inbox_table(text)
+    if table_items:
+        return table_items
+    return parse_inbox_bullets(text)
 
 
 def parse_next_actions(ctx: Ctx) -> List[Dict[str, Any]]:

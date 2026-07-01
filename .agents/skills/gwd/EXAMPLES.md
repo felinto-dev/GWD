@@ -55,8 +55,8 @@ Added:
 - pagar IPVA
 
 Inbox format:
-- `[ ] YYYY-MM-DD HH:MM | titulo`
-- `  Descricao: detalhes opcionais`
+- `| Date | Title | Description |`
+- `| YYYY-MM-DD HH:MM | titulo | detalhes opcionais |`
 
 Next -> `/gwd-process`.
 ```

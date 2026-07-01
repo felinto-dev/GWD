@@ -13,8 +13,9 @@ Keep these formats parseable by `scripts/gwd-query`; see `SCHEMA.md` before chan
 
 Raw captures. Process top-down. Preserve original wording.
 
-- [ ] YYYY-MM-DD HH:MM | Example title
-  Descricao: optional details, context, links, or notes
+| Date | Title | Description |
+|---|---|---|
+| YYYY-MM-DD HH:MM | Example title | Optional details, context, links, or notes |
 ```
 
 ### `next-actions.md`
