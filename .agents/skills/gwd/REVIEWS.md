@@ -230,6 +230,12 @@ Good monthly review outcome:
 Your active projects match your current responsibilities and goals.
 ```
 
+After monthly review:
+
+- Archive the review under `reviews/monthly/YYYY-MM.md`.
+- Refresh `projects.md` if project statuses or next actions changed.
+- Refresh `horizons.md` from canonical files.
+
 ## Quarterly review
 
 Use `/gwd-review quarterly`.
@@ -302,9 +308,18 @@ Good quarterly review outcome:
 Your goals and active commitments serve the life you are trying to build.
 ```
 
+After quarterly review:
+
+- Archive the review under `reviews/quarterly/YYYY-QN.md`.
+- Refresh `goals.md`, `vision.md`, or `purpose.md` if decisions changed.
+- Refresh `projects.md` if commitments were paused/archived.
+- Refresh `horizons.md` from canonical files.
+
 ## Horizons review
 
 Use `/gwd-horizons` when the user asks for the whole picture.
+
+Update `horizons.md` whenever `/gwd-horizons` runs. Treat it as derived: generate the snapshot from canonical files with `scripts/gwd-query horizons --root . --format md`, then preserve any user-written notes that should not be regenerated.
 
 ```text
 Horizons -> snapshot

@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao promover item para projeto/proxima acao, atualize `someday-maybe.md`, destino canonico, `projects.md` se necessario, e `horizons.md` se virou compromisso relevante.

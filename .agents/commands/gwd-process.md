@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao mover itens para projetos/proximas acoes/waiting/someday/calendar, atualize os arquivos de destino. Se criou projeto ou alterou area/meta, atualize `projects.md` e possivelmente `horizons.md`.

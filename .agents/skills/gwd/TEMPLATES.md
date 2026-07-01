@@ -127,25 +127,41 @@ Why this life/work exists.
 
 ### `horizons.md`
 
+Derived snapshot. Refresh from canonical H0-H5 files; do not treat as source of truth.
+
 ```markdown
 # Horizons Map
 
-H5 Purpose    -> purpose.md
-H4 Vision     -> vision.md
-H3 Goals      -> goals.md
-H2 Areas      -> areas.md
-H1 Projects   -> projects.md
-H0 Actions    -> next-actions.md
+Generated: YYYY-MM-DD HH:MM
 
-## Alignment Snapshot
+## Snapshot
 
-| Chain | Status | Note |
-|---|---|---|
-| H0 -> H1 -> H2 -> H3 -> H4 -> H5 | unknown |  |
+H5 : clear|fuzzy|missing
+H4 : clear|fuzzy|missing
+H3 : clear|overloaded|missing
+H2 : clear|neglected|missing
+H1 : current|stale|missing
+H0 : clear|noisy|missing
+
+## Counts
+
+- inbox_open: 0
+- next_open: 0
+- projects_active: 0
+- projects_missing_next: 0
+- waiting_due: 0
 
 ## Gaps
 
 - 
+
+## Next
+
+- /gwd-next
+
+## Notes
+
+User-written notes to preserve across refreshes.
 ```
 
 ### `waiting-for.md`

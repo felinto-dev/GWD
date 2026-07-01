@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Se `areas.md` mudar de forma relevante, atualize `horizons.md`.

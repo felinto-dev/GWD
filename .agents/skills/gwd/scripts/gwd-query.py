@@ -490,6 +490,9 @@ def horizon_status(ctx: Ctx) -> Dict[str, str]:
 def query_horizons(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     status = horizon_status(ctx)
     projects = parse_projects(ctx, args.stale_days)
+    inbox = parse_inbox(ctx)
+    next_actions = parse_next_actions(ctx)
+    waiting = parse_waiting(ctx)
     gaps: List[str] = []
     for h, rel in HORIZON_FILES.items():
         if status.get(h) in {"missing", "empty", "fuzzy"}:
@@ -497,10 +500,18 @@ def query_horizons(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     missing_next = sum(1 for p in projects if "missing_next" in p.get("flags", []))
     if missing_next:
         gaps.append(f"{missing_next} active projects lack next action")
+    counts = {
+        "inbox_open": sum(1 for i in inbox if not i.get("done")),
+        "next_open": sum(1 for i in next_actions if not i.get("done")),
+        "projects_active": sum(1 for p in projects if p.get("status", "").lower() == "active"),
+        "projects_missing_next": missing_next,
+        "waiting_due": sum(1 for w in waiting if w.get("due")),
+    }
     result = base_result("horizons", ctx)
     result.update(
         {
             "status": status,
+            "counts": counts,
             "gaps": gaps,
             "next_command": "/gwd-weekly" if missing_next else ("/gwd-vision" if status.get("H4") in {"missing", "empty", "fuzzy"} else "/gwd-next"),
         }
@@ -643,6 +654,39 @@ def output_ndjson(result: Dict[str, Any]) -> None:
 
 
 def output_md(result: Dict[str, Any]) -> None:
+    if result.get("mode") == "horizons":
+        print("# Horizons Map")
+        print()
+        print(f"Generated: {result.get('generated_at')}")
+        print()
+        print("## Snapshot")
+        print()
+        for h in ("H5", "H4", "H3", "H2", "H1", "H0"):
+            print(f"{h} : {result.get('status', {}).get(h, 'unknown')}")
+        if result.get("counts"):
+            print()
+            print("## Counts")
+            print()
+            for k, v in result["counts"].items():
+                print(f"- {k}: {v}")
+        if result.get("gaps"):
+            print()
+            print("## Gaps")
+            print()
+            for gap in result["gaps"]:
+                print(f"- {gap}")
+        print()
+        print("## Next")
+        print()
+        print(f"- {result.get('next_command')}")
+        if result.get("warnings"):
+            print()
+            print("## Warnings")
+            print()
+            for warning in result["warnings"]:
+                print(f"- {warning}")
+        return
+
     print(f"{result.get('mode', 'gwd').title()} -> summary")
     if "counts" in result:
         print("\nCounts:")

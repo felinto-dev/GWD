@@ -138,7 +138,39 @@ H4 -> vision.md
 H5 -> purpose.md
 ```
 
-`horizons.md` is a snapshot. It can be regenerated or updated from the other files.
+`horizons.md` is a derived snapshot, not a source of truth. Regenerate or refresh it from the canonical horizon files:
+
+```text
+next-actions.md
+projects.md
+areas.md
+goals.md
+vision.md
+purpose.md
+```
+
+Refresh `horizons.md` when:
+
+- `/gwd-setup` finishes the first sweep.
+- `/gwd-horizons` is executed.
+- `/gwd-align all` is executed.
+- `/gwd-review monthly` or `/gwd-review quarterly` finishes.
+- A significant H0-H5 file changes: new project, changed area, changed goal, changed vision, changed purpose.
+
+Generate a compact markdown snapshot with:
+
+```text
+gwd-query horizons --root . --format md
+```
+
+## Derived files update map
+
+| Derived file | Canonical inputs | Refresh trigger |
+|---|---|---|
+| `horizons.md` | H0-H5 files | setup, horizons, align all, monthly/quarterly review, significant horizon change |
+| `projects.md` | `projects/active/<slug>/info.md`, `tasks.md` | project create/update/archive, weekly review, next action changed |
+| `daily/YYYY-MM-DD.md` | selected next actions + done events | today plan, done, daily review |
+| `reviews/*` | current system state | end of weekly/monthly/quarterly review |
 
 ## Script modes
 

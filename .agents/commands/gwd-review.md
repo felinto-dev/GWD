@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao finalizar review mensal ou trimestral, atualize `horizons.md`. Ao finalizar review semanal, atualize `projects.md` se status/proximas acoes mudaram.

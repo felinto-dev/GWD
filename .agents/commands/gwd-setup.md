@@ -7,3 +7,9 @@ Use a skill `gwd` em modo setup.
 
 Argumentos:
 $ARGUMENTS
+
+Ao finalizar o primeiro sweep, atualize `horizons.md` com:
+
+```text
+.agents/skills/gwd/scripts/gwd-query horizons --root . --format md
+```

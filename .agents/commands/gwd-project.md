@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao criar/pausar/arquivar projeto ou mudar proxima acao, atualize `projects.md`. Se mudou area/meta/visao ligada ao projeto, atualize `horizons.md`.

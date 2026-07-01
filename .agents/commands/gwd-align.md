@@ -16,3 +16,9 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Se os argumentos forem `all`, atualize `horizons.md` depois do alinhamento usando:
+
+```text
+.agents/skills/gwd/scripts/gwd-query horizons --root . --format md
+```

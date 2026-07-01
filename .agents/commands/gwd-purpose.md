@@ -7,3 +7,5 @@ Use a skill `gwd` em modo purpose.
 
 Argumentos:
 $ARGUMENTS
+
+Se `purpose.md` mudar de forma relevante, atualize `horizons.md`.

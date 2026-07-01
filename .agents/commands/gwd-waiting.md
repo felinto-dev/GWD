@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao resolver ou criar follow-up, atualize `waiting-for.md`; se isso muda estado de projeto, atualize `projects.md`.

@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Ao montar plano diario, atualize `daily/YYYY-MM-DD.md`. Ao montar plano semanal, registre decisoes no review semanal quando aplicavel.

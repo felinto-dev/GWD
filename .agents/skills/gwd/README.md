@@ -131,6 +131,8 @@ open loops -> actions -> projects -> areas -> goals -> vision -> purpose
 
 `/gwd-align` checa se uma acao, projeto ou objetivo conversa com os horizontes superiores.
 
+`horizons.md` e um snapshot derivado da piramide. Ele deve ser atualizado por `/gwd-horizons`, `/gwd-align all`, final do setup, revisoes mensal/trimestral, e mudancas grandes em areas/metas/visao/proposito/projetos.
+
 ```text
 /gwd-align projeto Criar canal no YouTube
 /gwd-align next action escrever roteiro do video

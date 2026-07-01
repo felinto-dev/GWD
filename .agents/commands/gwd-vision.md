@@ -7,3 +7,5 @@ Use a skill `gwd` em modo vision.
 
 Argumentos:
 $ARGUMENTS
+
+Se `vision.md` mudar de forma relevante, atualize `horizons.md`.
