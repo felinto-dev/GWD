@@ -187,6 +187,7 @@ Daily logs are immutable and do not participate in memory expiry.
 | `/gwd-sweep` | guided mind sweep and horizon discovery |
 | `/gwd-capture` | quick capture to inbox |
 | `/gwd-clarify` | clarify one item |
+| `/gwd-refine` | improve title and description for one existing item by ID |
 | `/gwd-process` | process inbox items |
 | `/gwd-plan` | plan today or week |
 | `/gwd-today` | fast daily plan |
@@ -433,6 +434,68 @@ Decision rules:
 
 Do not leave a clarified item only in inbox. Move it to its canonical place or ask the missing question.
 
+## Refine item workflow
+
+Use for `/gwd-refine <item-id>` when the user wants to improve the title and description of one existing item without moving it.
+
+Intent:
+
+- Make an existing item easier to understand later.
+- Preserve the item's ID, date, status, context, review date, blockers, and canonical location.
+- Improve only the title and description unless the user explicitly asks for another change.
+
+Supported item locations:
+
+| ID prefix | Primary location |
+|---|---|
+| `in-` | `inbox.md` |
+| `na-` | `next-actions.md` |
+| `sm-` | `someday-maybe.md` |
+| project/task IDs or unknown prefixes | search canonical GWD files and `projects/active/*/` |
+
+Workflow:
+
+1. Require exactly one item ID. If missing, ask which ID to refine.
+2. Locate the item from the ID. Prefer prefix-based files first, then search canonical files. If multiple matches exist, show the candidates and ask which one.
+3. Read the full file before editing. Capture the current row/section, title, description, and nearby context.
+4. Inspect related local context before asking: project detail files, `projects.md`, linked area/goal, blockers, waiting-for, daily logs, or other tasks with the same project/title words.
+5. Interview until there is shared understanding. Ask one question at a time and wait for the user's answer before continuing.
+6. For every question, include a recommended answer and why. If evidence already answers it, state the inference and ask only for confirmation.
+7. Walk the decision tree in dependency order: what it means -> desired outcome -> why it matters -> boundaries/exclusions -> next visible action or done state -> wording.
+8. Stop interviewing when the improved wording is clear enough to be useful on review day; do not chase perfection.
+9. Show the proposed replacement title and description, then ask for confirmation before editing.
+10. After confirmation, update only the title/description cells or fields in the canonical item. Preserve ID, Added/date, context, review date, blockers, ordering, and surrounding formatting.
+11. Summarize old -> new and the file changed.
+
+Question shape:
+
+```markdown
+Refine -> <item-id>
+
+Atual:
+- Título: <current title>
+- Descrição: <current description or ->
+
+Inferi:
+- <fact from existing tasks/logs/context>
+
+Pergunta: <one question>
+Recomendado: <answer> -> <reason>
+```
+
+Confirmation shape before editing:
+
+```markdown
+Refine -> proposta
+
+Título: <new title>
+Descrição: <new description>
+
+Aplicar esta alteração em `<file>`?
+```
+
+Do not use `/gwd-refine` to process inbox, change destination, mark done, reprioritize, or create project structure. If the interview reveals that the item belongs elsewhere, recommend `/gwd-clarify` or `/gwd-process` after refining, but do not move it in the same step unless the user explicitly asks.
+
 ## Process inbox workflow
 
 Use for `/gwd-process`.
@@ -579,6 +642,7 @@ Start with the mode:
 ```text
 Capture -> ...
 Clarify -> ...
+Refine -> ...
 Plan -> ...
 Review -> ...
 Sweep -> ...
@@ -590,8 +654,9 @@ End with exactly one next prompt when interaction is needed:
 
 - `Processar inbox agora?`
 - `Qual item quer esclarecer?`
-- `Comecar por qual acao?`
-- `Continuar o sweep pelo proximo ramo?`
+- `Qual ID quer refinar?`
+- `Começar por qual ação?`
+- `Continuar o sweep pelo próximo ramo?`
 - `Quer alinhar esse projeto antes de ativar?`
 - Confirmar com `confirm gwd reset`?
 
