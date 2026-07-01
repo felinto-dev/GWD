@@ -209,9 +209,9 @@ Ideas and non-committed outcomes.
 
 ## Theme or Area
 
-| Item | Motivo | Próxima revisão | Logs |
-|---|---|---|---|
-| Idea text | Why it is not active now | YYYY-MM-DD | YYYY-MM-DD: user deferred for 1 month. Motivo: reason/context. |
+| ID | Título | Descrição | Próxima revisão | Blockers |
+|---|---|---|---|---|
+| sm-YYYYMMDD-NNN | Idea title | Why it is not active now | YYYY-MM-DD | - [ ] Factor preventing this from becoming an active project<br>- [x] Resolved blocker |
 ```
 
 ### `calendar.md`

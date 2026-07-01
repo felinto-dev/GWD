@@ -189,26 +189,30 @@ Canonical incubator grouped by theme or area. Use one table per section.
 ```markdown
 ## Theme or Area
 
-| Item | Motivo | Próxima revisão | Logs |
-|---|---|---|---|
-| Write a book | Too early for active commitment | 2026-09-01 | 2026-07-01: user deferred for 2 months. Motivo: waiting for clearer market signal. |
+| ID | Título | Descrição | Próxima revisão | Blockers |
+|---|---|---|---|---|
+| sm-YYYYMMDD-NNN | Write a book | Too early for active commitment | 2026-09-01 | - [ ] Waiting for clearer market signal<br>- [x] Choose publishing format |
 ```
 
 Fields:
 
 | Field | Required | Example |
 |---|---|---|
-| Item | yes | `Write a book` |
-| Motivo | recommended | `Not active this quarter` |
+| ID | yes | `sm-YYYYMMDD-NNN` |
+| Título | yes | `Write a book` |
+| Descrição | recommended | `Not active this quarter` |
 | Próxima revisão | recommended | `2026-09-01` |
-| Logs | optional | `2026-07-01: user deferred for 2 months. Motivo: ...` |
+| Blockers | recommended | `- [ ] Waiting for clearer market signal<br>- [x] Choose publishing format` |
 
 Rules:
 
 - Group ideas under `##` sections by theme, area, or product line.
-- Do not use a separate `Revisar em` cadence column.
+- Generate `ID` once when adding an item, using `sm-YYYYMMDD-NNN`; never regenerate existing IDs.
+- Do not use separate `Item`, `Motivo`, or `Revisar em` columns.
+- Use `Blockers` for one or more checklist items that prevent the idea from becoming an active project.
+- Write each blocker as `- [ ] blocker` and mark resolved blockers as `- [x] blocker`.
+- Separate multiple blockers inside the table cell with `<br>`.
 - `Próxima revisão` is a date for the next reconsideration.
-- `Logs` records why the item was deferred and for how long.
 - Escape literal pipes as `\|` inside cells.
 
 ## Horizons files

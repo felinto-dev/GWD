@@ -164,6 +164,22 @@ def normalize_key(row: Dict[str, str], *names: str) -> str:
     return ""
 
 
+def parse_inline_checklist(value: str) -> List[Dict[str, Any]]:
+    items: List[Dict[str, Any]] = []
+    parts = re.split(r"\s*(?:<br\s*/?>|\\n)\s*", value, flags=re.IGNORECASE)
+    for index, part in enumerate(parts, start=1):
+        text = part.strip()
+        if not text:
+            continue
+        match = re.match(r"^-\s*\[([ xX])\]\s*(.+)$", text)
+        if match:
+            status = match.group(1).lower()
+            items.append({"index": index, "done": status == "x", "text": match.group(2).strip(), "raw": text})
+        else:
+            items.append({"index": index, "done": False, "text": text, "raw": text})
+    return items
+
+
 def slugify(value: str) -> str:
     value = value.lower().strip()
     value = re.sub(r"[^a-z0-9]+", "-", value)
@@ -845,17 +861,22 @@ def query_someday(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     table_rows = parse_markdown_table(text)
     items: List[Dict[str, Any]] = []
     for row in table_rows:
-        item = normalize_key(row, "Item")
-        if not item:
+        title = normalize_key(row, "Título", "Titulo", "Title", "Item")
+        if not title:
             continue
+        item_id = normalize_key(row, "ID") or f"sm-{row.get('_line', len(items) + 1)}"
+        blockers_text = normalize_key(row, "Blockers", "Bloqueios", "Impedimentos", "Logs")
+        blockers = parse_inline_checklist(blockers_text)
         items.append(
             {
-                "id": f"sm-{row.get('_line', len(items) + 1)}",
+                "id": item_id,
                 "line": int(row.get("_line", "0") or 0),
-                "title": item,
-                "reason": normalize_key(row, "Motivo", "Reason"),
+                "title": title,
+                "description": normalize_key(row, "Descrição", "Descricao", "Description", "Motivo", "Reason"),
                 "next_review": normalize_key(row, "Próxima revisão", "Proxima revisao", "Next review"),
-                "logs": normalize_key(row, "Logs"),
+                "blockers": blockers,
+                "blockers_open": sum(1 for blocker in blockers if not blocker.get("done")),
+                "blockers_done": sum(1 for blocker in blockers if blocker.get("done")),
                 "raw": row.get("_raw", ""),
             }
         )
