@@ -277,3 +277,58 @@ Recommended order:
 
 Comecar pelo inbox?
 ```
+
+
+## 10. Summary dashboard
+
+User:
+
+```text
+/gwd-summary
+```
+
+Assistant internal first step:
+
+```text
+.agents/skills/gwd/scripts/gwd-query summary --root . --format json
+.agents/skills/gwd/scripts/gwd-query summary --root . --format md
+```
+
+Assistant:
+
+```markdown
++======================================================================+
+|                         GWD MISSION CONTROL                          |
++======================================================================+
+| Inbox 3   | Next 12  | Projects 5   | Missing Next 1   | Waiting Due 2 |
++----------------------------------------------------------------------+
+Focus -> Process inbox first
+
+HORIZONS
+--------
+H5 clear
+H4 fuzzy
+H3 clear
+H2 clear
+H1 stale
+H0 clear
+
+TOP ACTIONS
+-----------
+1. P0 @computer enviar proposta revisada 25m -> Cliente X
+2. P1 @phone cobrar retorno da Ana 10m -> Waiting
+3. P1 @deep escrever plano do lancamento 60m -> Launch
+
+PROJECT FLAGS
+-------------
+- Renovar passaporte [missing_next]
+
+GAPS
+----
+- 1 projects missing next action
+- 2 waiting follow-ups due
+
+NEXT
+----
+/gwd-process inbox
+```

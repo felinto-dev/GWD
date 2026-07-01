@@ -176,6 +176,7 @@ gwd-query horizons --root . --format md
 
 ```text
 gwd-query status   --root .
+gwd-query summary  --root . --format md
 gwd-query inbox    --root . --limit 20
 gwd-query next     --root . --context @computer --time 30 --energy low
 gwd-query projects --root . --missing-next
@@ -185,6 +186,20 @@ gwd-query align    --root . --item "Criar canal no YouTube"
 gwd-query waiting  --root . --due
 gwd-query someday  --root . --limit 20
 ```
+
+## Summary mode
+
+`gwd-query summary --root . --format md` prints a visual mission-control dashboard:
+
+```text
++======================================================================+
+|                         GWD MISSION CONTROL                          |
++======================================================================+
+| Inbox ... | Next ... | Projects ... | Missing Next ... | Waiting Due ... |
++----------------------------------------------------------------------+
+```
+
+Use it for `/gwd-summary` and for quick status checks before reading files.
 
 ## Output contract
 

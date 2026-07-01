@@ -123,6 +123,7 @@ Prefer scripts for read-only summaries:
 
 | Need | Query |
 |---|---|
+| mission-control summary | `gwd-query summary --root . --format md` |
 | overall status | `gwd-query status --root .` |
 | inbox items | `gwd-query inbox --root . --limit 20` |
 | next actions | `gwd-query next --root . --context @computer --time 30 --energy low` |
@@ -147,6 +148,7 @@ Scripts are read-only. They never modify user data. See `SCHEMA.md` for parseabl
 | Command | Mode |
 |---|---|
 | `/gwd` | route request, show status, or choose workflow |
+| `/gwd-summary` | polished mission-control dashboard across tasks, projects, and horizons |
 | `/gwd-setup` | initialize files, inspect references, run first sweep |
 | `/gwd-sweep` | guided mind sweep and horizon discovery |
 | `/gwd-capture` | quick capture to inbox |
@@ -171,6 +173,16 @@ Scripts are read-only. They never modify user data. See `SCHEMA.md` for parseabl
 | `/gwd-reset` | safe reset or archive flow |
 
 If the mode is unclear, route by intent and state the chosen mode in one line.
+
+## Summary workflow
+
+Use `/gwd-summary` when the user wants the big picture, main tasks, or a dashboard.
+
+1. Run `.agents/skills/gwd/scripts/gwd-query summary --root . --format json` first.
+2. Optionally run `--format md` for a ready-made ASCII mission-control panel.
+3. Show: focus, counts, horizons, top actions, flagged projects, due waiting items, gaps, and next command.
+4. Keep it visual and scannable. Use ASCII banners/boxes. Do not dump full files.
+5. If script returns warnings, mention them and read only the needed file/section.
 
 ## Local reference discovery
 

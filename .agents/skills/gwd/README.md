@@ -54,6 +54,7 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 
 | Etapa | Objetivo | Comandos |
 |---|---|---|
+| Summary | Ver painel geral bonito | `/gwd-summary` |
 | Setup | Montar sistema e primeiro sweep | `/gwd-setup` |
 | Capture | Tirar tudo da cabeca | `/gwd-capture`, `/gwd-sweep` |
 | Clarify | Decidir o que cada item significa | `/gwd-clarify`, `/gwd-process` |
@@ -90,6 +91,7 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 A skill inclui scripts read-only para consultar o sistema sem carregar arquivos grandes no contexto.
 
 ```text
+.agents/skills/gwd/scripts/gwd-query summary --root . --format md
 .agents/skills/gwd/scripts/gwd-query status --root . --format json
 .agents/skills/gwd/scripts/gwd-query next --root . --context @computer --time 30
 .agents/skills/gwd/scripts/gwd-query horizons --root .
@@ -99,6 +101,18 @@ A skill inclui scripts read-only para consultar o sistema sem carregar arquivos 
 Regra: usar `gwd-query` para resumos; ler markdown completo so antes de editar, quando houver ambiguidades, ou quando voce pedir detalhes integrais.
 
 Padrao dos arquivos: `SCHEMA.md`.
+
+## Summary
+
+Use `/gwd-summary` para um painel visual das tarefas principais, estado dos horizontes, projetos com problemas, follow-ups vencidos, gaps e proximo comando.
+
+```text
+/gwd-summary
+/gwd-summary today
+/gwd-summary week
+```
+
+O comando deve caprichar no visual: banners, caixas ASCII e secoes curtas.
 
 ## Setup
 
@@ -191,6 +205,7 @@ Shutdown
 
 ```text
 /gwd           router/status geral
+/gwd-summary   painel visual com tarefas, projetos e horizontes
 /gwd-setup     inicializa sistema e roda primeiro sweep
 /gwd-capture   captura itens crus
 /gwd-clarify   esclarece um item

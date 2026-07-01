@@ -552,6 +552,70 @@ def query_review(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     return result
 
 
+def query_summary(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
+    inbox = parse_inbox(ctx)
+    next_actions = [i for i in parse_next_actions(ctx) if not i.get("done")]
+    projects = parse_projects(ctx, args.stale_days)
+    waiting = parse_waiting(ctx)
+    hstatus = horizon_status(ctx)
+
+    def score(item: Dict[str, Any]) -> Tuple[int, int]:
+        priority_score = {"P0": 0, "P1": 1, "P2": 2}.get(item.get("priority"), 3)
+        time_score = item.get("minutes") if item.get("minutes") is not None else 999
+        return (priority_score, time_score)
+
+    top_actions = sorted(next_actions, key=score)[: args.limit]
+    missing_next = [p for p in projects if "missing_next" in p.get("flags", [])]
+    stale_projects = [p for p in projects if "stale" in p.get("flags", [])]
+    due_waiting = [w for w in waiting if w.get("due")]
+    inbox_open = [i for i in inbox if not i.get("done")]
+
+    if inbox_open:
+        focus = "Process inbox first"
+        next_command = "/gwd-process inbox"
+    elif missing_next:
+        focus = "Fix projects missing next actions"
+        next_command = "/gwd-weekly"
+    elif top_actions:
+        focus = top_actions[0].get("text") or "Choose next action"
+        next_command = f"/gwd-start {top_actions[0]['id']}"
+    else:
+        focus = "Capture or review to find the next move"
+        next_command = "/gwd-capture"
+
+    gaps: List[str] = []
+    for h, rel in HORIZON_FILES.items():
+        if hstatus.get(h) in {"missing", "empty", "fuzzy"}:
+            gaps.append(f"{h} {rel} is {hstatus[h]}")
+    if missing_next:
+        gaps.append(f"{len(missing_next)} projects missing next action")
+    if due_waiting:
+        gaps.append(f"{len(due_waiting)} waiting follow-ups due")
+
+    result = base_result("summary", ctx)
+    result.update(
+        {
+            "title": "GWD Mission Control",
+            "focus": focus,
+            "counts": {
+                "inbox_open": len(inbox_open),
+                "next_open": len(next_actions),
+                "projects_active": sum(1 for p in projects if p.get("status", "").lower() == "active"),
+                "projects_missing_next": len(missing_next),
+                "projects_stale": len(stale_projects),
+                "waiting_due": len(due_waiting),
+            },
+            "horizons": hstatus,
+            "top_actions": top_actions,
+            "project_flags": (missing_next + stale_projects)[: args.limit],
+            "waiting_due_items": due_waiting[: args.limit],
+            "gaps": gaps,
+            "next_command": next_command,
+        }
+    )
+    return result
+
+
 def query_waiting(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     items = parse_waiting(ctx)
     open_items = [w for w in items if w.get("status", "").lower() == "open"]
@@ -654,6 +718,60 @@ def output_ndjson(result: Dict[str, Any]) -> None:
 
 
 def output_md(result: Dict[str, Any]) -> None:
+    if result.get("mode") == "summary":
+        counts = result.get("counts", {})
+        print("+======================================================================+")
+        print("|                         GWD MISSION CONTROL                          |")
+        print("+======================================================================+")
+        print(f"| Inbox {counts.get('inbox_open', 0):<3} | Next {counts.get('next_open', 0):<3} | Projects {counts.get('projects_active', 0):<3} | Missing Next {counts.get('projects_missing_next', 0):<3} | Waiting Due {counts.get('waiting_due', 0):<3} |")
+        print("+----------------------------------------------------------------------+")
+        print(f"Focus -> {result.get('focus', 'unknown')}")
+        print()
+        print("HORIZONS")
+        print("--------")
+        for h in ("H5", "H4", "H3", "H2", "H1", "H0"):
+            print(f"{h}  {result.get('horizons', {}).get(h, 'unknown')}")
+        print()
+        print("TOP ACTIONS")
+        print("-----------")
+        actions = result.get("top_actions") or []
+        if actions:
+            for idx, item in enumerate(actions[:7], start=1):
+                priority = item.get("priority") or "--"
+                context = item.get("context") or "@?"
+                minutes = f" {item.get('minutes')}m" if item.get("minutes") is not None else ""
+                link = f" -> {item.get('link')}" if item.get("link") else ""
+                print(f"{idx}. {priority} {context} {item.get('text')}{minutes}{link}")
+        else:
+            print("- no open next actions found")
+        print()
+        print("PROJECT FLAGS")
+        print("-------------")
+        flagged = result.get("project_flags") or []
+        if flagged:
+            for project in flagged[:5]:
+                flags = ",".join(project.get("flags", []))
+                print(f"- {project.get('name')} [{flags}]")
+        else:
+            print("- no flagged projects")
+        print()
+        if result.get("gaps"):
+            print("GAPS")
+            print("----")
+            for gap in result["gaps"][:7]:
+                print(f"- {gap}")
+            print()
+        print("NEXT")
+        print("----")
+        print(f"{result.get('next_command')}")
+        if result.get("warnings"):
+            print()
+            print("WARNINGS")
+            print("--------")
+            for warning in result["warnings"]:
+                print(f"- {warning}")
+        return
+
     if result.get("mode") == "horizons":
         print("# Horizons Map")
         print()
@@ -716,7 +834,7 @@ def output_md(result: Dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Query GWD markdown files without reading them into the agent context.")
-    parser.add_argument("mode", choices=["status", "inbox", "next", "projects", "horizons", "review", "align", "waiting", "someday"])
+    parser.add_argument("mode", choices=["status", "summary", "inbox", "next", "projects", "horizons", "review", "align", "waiting", "someday"])
     parser.add_argument("extra", nargs="*", help="extra words for align/item queries")
     parser.add_argument("--root", default=".", help="GWD workspace root")
     parser.add_argument("--format", choices=["json", "md", "ndjson"], default="json")
@@ -739,6 +857,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ctx = Ctx(root=Path(args.root).resolve(), files_read=[], warnings=[])
     handlers = {
         "status": query_status,
+        "summary": query_summary,
         "inbox": query_inbox,
         "next": query_next,
         "projects": query_projects,
