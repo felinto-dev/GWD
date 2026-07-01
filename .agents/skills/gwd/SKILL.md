@@ -45,6 +45,7 @@ H0 and H1 create control. H2-H5 create perspective. The system needs both.
 - If a request is vague, capture first; clarify later.
 - Preserve the user's wording in inbox title and description. Do not over-process raw captures.
 - During setup and sweep, inspect useful local reference files before asking questions.
+- When asking the user a question, use `AskUserInput`, `AskUserQuestion`, or the closest equivalent supported by the current agent/tooling; do not rely only on plain text when an interactive question tool is available.
 - For each setup/sweep question, provide a recommended answer and the reason.
 - Run alignment automatically when creating/reviewing projects and during monthly/quarterly reviews.
 
