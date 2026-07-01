@@ -154,9 +154,12 @@ Any canonical list with an added/created date column must stay sorted newest fir
 When adding or moving an item:
 
 - Preserve existing headings/sections.
-- Insert the row above older rows in the same table/section, not at the bottom.
+- Read the destination table and compare the new row's `Added`/created timestamp against neighboring rows before editing.
+- Insert the row in date-descending position: below newer rows and above older rows in the same table/section.
+- Never append to the bottom just because it is easier; bottom insertion is only correct when the new row is the oldest item in that table/section.
+- If several rows share the same timestamp, preserve their existing relative order and place the new row after existing rows with that same timestamp unless there is a clear ID/order convention.
 - If the destination table has no added/created date column, add one only when the workflow schema requires it; otherwise keep the existing format and choose the nearest date column available.
-- If a list is already out of order, fix only the affected table/section you edit unless the user asks for a broader cleanup.
+- If a list is already out of order, fix the affected table/section enough that the inserted/moved row is correctly positioned; do not perform a broad cleanup unless the user asks.
 
 ## GWD memory workflow
 
