@@ -351,7 +351,9 @@ Recommendation:
 
 Use for `/gwd-capture` and any raw input.
 
-- Add each item as one row in the `inbox.md` table.
+- Add each item as one row in the `inbox.md` table with stable `ID` and `Added` timestamp.
+- Generate `ID` once when capturing, using `in-YYYYMMDD-HHMMSS-NNN`; never regenerate existing IDs.
+- `Added` is the local date and time when the item entered inbox.
 - Use the first short phrase as `Title`; put extra context in `Description`.
 - Preserve original wording across title and description.
 - Split obvious multi-item lists into separate rows.
@@ -364,9 +366,9 @@ Use for `/gwd-capture` and any raw input.
 Capture format:
 
 ```markdown
-| Date | Title | Description |
-|---|---|---|
-| YYYY-MM-DD HH:MM | Titulo da captura | detalhes opcionais preservados do pedido original |
+| ID | Added | Title | Description |
+|---|---|---|---|
+| in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Titulo da captura | detalhes opcionais preservados do pedido original |
 ```
 
 ## Clarify workflow

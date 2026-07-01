@@ -52,16 +52,17 @@ Fields:
 Canonical capture table:
 
 ```markdown
-| Date | Title | Description |
-|---|---|---|
-| YYYY-MM-DD HH:MM | Title | Optional detail preserved from the original capture |
+| ID | Added | Title | Description |
+|---|---|---|---|
+| in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Title | Optional detail preserved from the original capture |
 ```
 
 Fields:
 
 | Field | Required | Example |
 |---|---|---|
-| Date | recommended | `2026-06-30 09:15` |
+| ID | yes | `in-20260701-093000-001` |
+| Added | yes | `2026-07-01 09:30` |
 | Title | yes | `Responder Ana` |
 | Description | optional | `Ela pediu retorno sobre contrato e prazo.` |
 
@@ -69,6 +70,8 @@ Rules:
 
 - Preserve original wording across title and description.
 - One capture entry per table row.
+- Keep `ID` stable; never regenerate it after row creation.
+- `Added` is the date and time when the item entered inbox.
 - Do not track completion status in inbox; processed items leave the table.
 - If an item takes less than 2 minutes, do it now and log it instead of keeping it in inbox.
 - Escape literal pipes as `\|` inside cells.

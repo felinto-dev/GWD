@@ -8,9 +8,9 @@ Use a skill `gwd` em modo capture.
 Formato do inbox:
 
 ```markdown
-| Date | Title | Description |
-|---|---|---|
-| YYYY-MM-DD HH:MM | Titulo | detalhes opcionais preservados |
+| ID | Added | Title | Description |
+|---|---|---|---|
+| in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Titulo | detalhes opcionais preservados |
 ```
 
 Argumentos:

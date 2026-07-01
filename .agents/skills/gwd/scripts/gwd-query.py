@@ -252,16 +252,18 @@ def parse_inbox_table(text: str) -> List[Dict[str, Any]]:
         title = normalize_key(row, "Title", "Titulo", "T\u00edtulo", "Item", "Task", "Tarefa")
         if not title or title.lower() in {"title", "titulo", "t\u00edtulo", "item", "task", "tarefa"}:
             continue
-        stamp = normalize_key(row, "Date", "Data", "Captured", "Capturado", "Stamp")
-        description = normalize_key(row, "Description", "Descricao", "Descri\u00e7\u00e3o", "Notes", "Notas") or None
         line = int(row.get("_line", "0") or 0)
+        inbox_id = normalize_key(row, "ID", "Id", "Inbox ID", "InboxID") or f"inbox:{line}"
+        stamp = normalize_key(row, "Added", "Adicionado", "Date", "Data", "Captured", "Capturado", "Stamp")
+        description = normalize_key(row, "Description", "Descricao", "Descri\u00e7\u00e3o", "Notes", "Notas") or None
         items.append(
             {
-                "id": f"inbox:{line}",
+                "id": inbox_id,
                 "line": line,
                 "status": " ",
                 "done": False,
                 "stamp": stamp or None,
+                "added": stamp or None,
                 "title": title,
                 "description": description,
                 "text": title,
