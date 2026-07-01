@@ -29,24 +29,14 @@ someday-maybe.md
 calendar.md
 ```
 
-## Task line
+## Task line legacy format
 
-Canonical format:
+Checklist task lines are legacy/fallback for older project support files. Root `next-actions.md` uses a table.
 
 ```markdown
-- [ ] P1 @context Task text (30m) -> Project or Area
+- [ ] @context Task text (30m) -> Project or Area
 ```
 
-Fields:
-
-| Field | Required | Example |
-|---|---|---|
-| checkbox | yes | `[ ]`, `[x]` |
-| priority | recommended | `P0`, `P1`, `P2` |
-| context | recommended | `@computer`, `@phone`, `@deep` |
-| text | yes | `Review proposal` |
-| estimate | optional | `(30m)` |
-| link | optional | `-> Sales project` |
 
 ## `inbox.md`
 
@@ -120,15 +110,31 @@ Rules:
 
 ## `next-actions.md`
 
-Use context sections and task lines.
+Canonical next-action table:
 
 ```markdown
-## @computer
-- [ ] P1 Review proposal (30m) -> Client project
-
-## @phone
-- [ ] P0 Call Ana about contract (10m) -> Sales
+| ID | Added | Title | Description | Context |
+|---|---|---|---|---|
+| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Review proposal | Project/area, notes, or useful detail | @computer |
 ```
+
+Fields:
+
+| Field | Required | Example |
+|---|---|---|
+| ID | yes | `na-20260701-143000-001` |
+| Added | yes | `2026-07-01 14:30` |
+| Title | yes | `Review proposal` |
+| Description | optional | `Project/area: Client project` |
+| Context | yes | `@computer`, `@phone`, `@splita` |
+
+Rules:
+
+- One visible physical action per row.
+- Keep IDs stable after creation.
+- Do not use P0/P1/P2 priority labels; choose by context, time, energy, consequence, and alignment.
+- Escape literal pipes as `\|` inside cells.
+
 
 ## `projects.md`
 

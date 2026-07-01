@@ -25,22 +25,9 @@ Raw captures. Process top-down. Preserve original wording.
 
 Canonical list of single visible physical actions.
 
-## @computer
-- [ ] P1 Task text (30m) -> Project or Area
-
-## @phone
-
-## @errand
-
-## @home
-
-## @office
-
-## @deep
-
-## @low-energy
-
-## @agenda-name
+| ID | Added | Title | Description | Context |
+|---|---|---|---|---|
+| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Call Ana about contract | Project/area, notes, or useful detail | @phone |
 ```
 
 ### `projects.md`
@@ -281,7 +268,7 @@ Why this matters.
 
 ## Next Actions
 
-- [ ] P1 @context Action text (30m)
+- [ ] @context Action text (30m)
 
 ## Later
 
@@ -306,13 +293,13 @@ Time: <available time>
 Energy: high|medium|low
 
 ### Must
-- [ ] P0 @context Action (time)
+- [ ] @context Action (time)
 
 ### Should
-- [ ] P1 @context Action (time)
+- [ ] @context Action (time)
 
 ### Could
-- [ ] P2 @context Action (time)
+- [ ] @context Action (time)
 
 ## Log
 
@@ -347,7 +334,7 @@ Clarify -> <item>
 Decision: next action | project | waiting | someday | reference | calendar | trash
 Destination: `<path>`
 
-Next action: `@context action (time)`
+Next action row: `| na-... | YYYY-MM-DD HH:MM | action | description | @context |`
 Question: <only if needed>
 ```
 
@@ -418,9 +405,9 @@ Plan -> hoje
 Focus: <one outcome>
 Capacity: <time>, energy <level>
 
-1. P0 @context <action> (<time>) -> why
-2. P1 @context <action> (<time>) -> why
-3. P2 @context <action> (<time>) -> why
+1. @context <action> -> why
+2. @context <action> -> why
+3. @context <action> -> why
 
 First move: <2-minute start>
 ```
@@ -471,9 +458,9 @@ Next action: <new action or none>
 
 ## Priority guide
 
-- P0: consequence if not done soon.
-- P1: moves important outcome forward.
-- P2: useful, optional, or low consequence.
+- Consequence if not done soon.
+- Alignment with active outcomes.
+- Context, time, energy, and momentum.
 
 ## Context guide
 

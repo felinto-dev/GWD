@@ -322,8 +322,43 @@ def parse_inbox(ctx: Ctx) -> List[Dict[str, Any]]:
     return parse_inbox_bullets(text)
 
 
+
+def parse_next_actions_table(text: str) -> List[Dict[str, Any]]:
+    rows = parse_markdown_table(text)
+    items: List[Dict[str, Any]] = []
+    for row in rows:
+        title = normalize_key(row, "Title", "Titulo", "Título", "Action", "Acao", "Ação")
+        context = normalize_key(row, "Context", "Contexto")
+        if not title or not context:
+            continue
+        line = int(row.get("_line", "0") or 0)
+        action_id = normalize_key(row, "ID", "Id", "Next ID", "NextID") or f"na:{line}"
+        added = normalize_key(row, "Added", "Adicionado", "Date", "Data") or None
+        description = normalize_key(row, "Description", "Descricao", "Descrição", "Notes", "Notas") or None
+        items.append(
+            {
+                "id": action_id,
+                "line": line,
+                "status": " ",
+                "done": False,
+                "priority": None,
+                "context": context,
+                "text": title,
+                "title": title,
+                "description": description,
+                "added": added,
+                "minutes": None,
+                "link": "",
+                "raw": row.get("_raw", ""),
+            }
+        )
+    return items
+
 def parse_next_actions(ctx: Ctx) -> List[Dict[str, Any]]:
     text = ctx.read_text("next-actions.md")
+    table_items = parse_next_actions_table(text)
+    if table_items:
+        return table_items
     items: List[Dict[str, Any]] = []
     section_context: Optional[str] = None
     for line_no, line in enumerate(text.splitlines(), start=1):
@@ -525,12 +560,13 @@ def query_next(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
         if args.energy == "low" and item.get("context") == "@deep":
             continue
         filtered.append(item)
-    def score(item: Dict[str, Any]) -> Tuple[int, int, int]:
-        priority_score = {"P0": 0, "P1": 1, "P2": 2}.get(item.get("priority"), 3)
-        time_score = item.get("minutes") if item.get("minutes") is not None else 999
-        low_bonus = 0 if args.energy == "low" and item.get("context") == "@low-energy" else 1
-        return (priority_score, low_bonus, time_score)
-    filtered.sort(key=score)
+    if any(item.get("priority") for item in filtered):
+        def score(item: Dict[str, Any]) -> Tuple[int, int, int]:
+            priority_score = {"P0": 0, "P1": 1, "P2": 2}.get(item.get("priority"), 3)
+            time_score = item.get("minutes") if item.get("minutes") is not None else 999
+            low_bonus = 0 if args.energy == "low" and item.get("context") == "@low-energy" else 1
+            return (priority_score, low_bonus, time_score)
+        filtered.sort(key=score)
     limited = filtered[: args.limit]
     result = base_result("next", ctx)
     result.update(
@@ -736,7 +772,7 @@ def query_summary(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
         time_score = item.get("minutes") if item.get("minutes") is not None else 999
         return (priority_score, time_score)
 
-    top_actions = sorted(next_actions, key=score)[: args.limit]
+    top_actions = sorted(next_actions, key=score)[: args.limit] if any(i.get("priority") for i in next_actions) else next_actions[: args.limit]
     missing_next = [p for p in projects if "missing_next" in p.get("flags", [])]
     stale_projects = [p for p in projects if "stale" in p.get("flags", [])]
     due_waiting = [w for w in waiting if w.get("due")]

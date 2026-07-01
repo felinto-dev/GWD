@@ -414,7 +414,7 @@ Decision rules:
 | Maybe later | `someday-maybe.md` |
 | Time/date-specific | `calendar.md` |
 | Delegated / pending | `waiting-for.md` |
-| One action | `next-actions.md` |
+| One action | `next-actions.md` table |
 | Multi-step outcome | `projects/active/<slug>/` + next action |
 
 Do not leave a clarified item only in inbox. Move it to its canonical place or ask the missing question.
@@ -466,7 +466,7 @@ Inputs to consider:
 - Time available.
 - Energy: high, medium, low.
 - Context: where/tools/people available.
-- P0/P1/P2 priority.
+- Consequence, urgency, and alignment with areas/goals.
 - Waiting-for and deadlines.
 - Alignment with areas/goals when choosing between important work.
 
@@ -481,7 +481,7 @@ Filter next actions in this order:
 1. Context available now.
 2. Time available now.
 3. Energy available now.
-4. Priority / consequence.
+4. Consequence / urgency.
 5. Alignment with areas/goals.
 6. Momentum.
 
@@ -507,7 +507,7 @@ Use for `/gwd-done`.
 
 - Add a timestamped daily log entry for every completed action.
 - If it was a 2-minute inbox item, log completion and remove it from `inbox.md`.
-- If it was an open next action, remove it from `next-actions.md`; do not keep completed actions there.
+- If it was an open next action, remove its table row from `next-actions.md`; do not keep completed actions there.
 - If it was a project action, move/record it under the project's Done section when present, then propose or create the next action.
 - If it completes the project, update `projects.md`; archive `projects/active/<slug>/` only after confirmation.
 - Summarize briefly.

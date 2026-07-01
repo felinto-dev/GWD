@@ -131,10 +131,10 @@ Plan -> hoje
 Focus: avancar projeto X sem exigir alta energia.
 Capacity: 2h, energy low
 
-1. P0 @low-energy revisar ultimo estado do projeto X (15m)
-2. P0 @computer executar menor proxima acao desbloqueadora (45m)
-3. P1 @phone enviar atualizacao para pessoa envolvida (10m)
-4. P1 @low-energy registrar proxima acao clara (10m)
+1. @low-energy revisar ultimo estado do projeto X (15m)
+2. @computer executar menor proxima acao desbloqueadora (45m)
+3. @phone enviar atualizacao para pessoa envolvida (10m)
+4. @low-energy registrar proxima acao clara (10m)
 
 First move: abrir o arquivo do projeto X e escrever "estado atual" em 3 bullets.
 ```
@@ -244,8 +244,8 @@ Next -> agora
 
 Recommended: na:24 because it matches context/time/energy.
 
-1. P1 @computer revisar proposta (25m) -> Client project
-2. P2 @computer limpar inbox de notas (15m) -> Admin
+1. @computer revisar proposta (25m) -> Client project
+2. @computer limpar inbox de notas (15m) -> Admin
 
 Comecar por qual acao?
 ```
@@ -319,9 +319,9 @@ H0 clear
 
 TOP ACTIONS
 -----------
-1. P0 @computer enviar proposta revisada 25m -> Cliente X
-2. P1 @phone cobrar retorno da Ana 10m -> Waiting
-3. P1 @deep escrever plano do lancamento 60m -> Launch
+1. @computer enviar proposta revisada 25m -> Cliente X
+2. @phone cobrar retorno da Ana 10m -> Waiting
+3. @deep escrever plano do lancamento 60m -> Launch
 
 PROJECT FLAGS
 -------------
