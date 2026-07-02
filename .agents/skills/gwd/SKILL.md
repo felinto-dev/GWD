@@ -155,7 +155,8 @@ Any canonical list with an added/created date column must stay sorted newest fir
 When adding or moving an item:
 
 - Preserve existing headings/sections.
-- Read the destination table and compare the new row's `Added`/created timestamp against neighboring rows before editing.
+- Use the local timestamp when the item enters the destination list as the destination `Added`/created value. Do not copy the source list's capture date when moving from inbox, someday/maybe, waiting-for, calendar, project tasks, or another canonical list; the source date may remain only in the description or audit log if useful.
+- Read the destination table and compare the new row's destination `Added`/created timestamp against neighboring rows before editing.
 - Insert the row in date-descending position: below newer rows and above older rows in the same table/section.
 - Never append to the bottom just because it is easier; bottom insertion is only correct when the new row is the oldest item in that table/section.
 - If several rows share the same timestamp, preserve their existing relative order and place the new row after existing rows with that same timestamp unless there is a clear ID/order convention.
@@ -456,7 +457,7 @@ Supported item locations:
 
 Workflow:
 
-1. Require exactly one item ID. If missing, ask which ID to refine.
+1. Identify the item to refine. Prefer an explicit item ID. If the user omits the ID but the immediately preceding assistant turn mentioned exactly one item/action/project, infer that item and state the inference. If context names multiple possible items or the last mentioned item is not clear, ask which ID to refine.
 2. Locate the item from the ID. Prefer prefix-based files first, then search canonical files. If multiple matches exist, show the candidates and ask which one.
 3. Read the full file before editing. Capture the current row/section, title, description, and nearby context.
 4. Inspect related local context before asking: project detail files, `projects.md`, linked area/goal, blockers, waiting-for, daily logs, or other tasks with the same project/title words.
