@@ -42,6 +42,7 @@ H0 and H1 create control. H2-H5 create perspective. The system needs both.
 - Store state in visible markdown files at the workspace root when writing is needed.
 - One commitment lives in one canonical place. Dashboards summarize; they do not duplicate tasks.
 - Prefer inserting new rows in date-descending order instead of appending. Before overwriting, deleting, archiving, or resetting, inspect the target and ask for exact confirmation.
+- Treat `daily/YYYY-MM-DD.md` as the audit trail for GWD changes: log relevant additions, moves, edits, completions, deletions, archives, and resets with enough detail to understand what changed and recover from regret when practical.
 - If a request is vague, capture first; clarify later.
 - Preserve the user's wording in inbox title and description. Do not over-process raw captures.
 - During setup and sweep, inspect useful local reference files before asking questions.
@@ -101,7 +102,7 @@ Canonical files are the source of truth. Derived files are dashboards, logs, or 
 | `waiting-for.md` | canonical waiting list | `/gwd-waiting`, delegated item, follow-up resolved, weekly review |
 | `someday-maybe.md` | canonical incubator | `/gwd-someday`, deferred item, monthly review |
 | `calendar.md` | canonical hard landscape | date/time-specific item discovered in process/sweep |
-| `daily/YYYY-MM-DD.md` | log/plan | `/gwd-today`, `/gwd-done`, daily review |
+| `daily/YYYY-MM-DD.md` | log/plan/audit trail | any relevant GWD addition, move, edit, completion, deletion, archive, reset; `/gwd-today`, `/gwd-done`, daily review |
 | `reviews/*` | review archive | end of weekly/monthly/quarterly reviews |
 
 `horizons.md` is not a source of truth. Update it from `next-actions.md`, `projects.md`, `areas.md`, `goals.md`, `vision.md`, and `purpose.md`. Generate a compact snapshot with:
