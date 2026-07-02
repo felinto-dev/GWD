@@ -65,7 +65,7 @@ Focus: H0 next actions.
 Checklist:
 
 1. Check today's `daily/YYYY-MM-DD.md` plan and log.
-2. Mark completed actions.
+2. Apply the Done workflow to completed actions: log in `daily/YYYY-MM-DD.md` and remove open rows from `next-actions.md`.
 3. Move unfinished actions to `next-actions.md`, tomorrow, `waiting-for.md`, or `someday-maybe.md`.
 4. Capture loose thoughts into `inbox.md`.
 5. Choose tomorrow's first move.

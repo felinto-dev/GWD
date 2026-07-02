@@ -193,7 +193,7 @@ Daily logs are immutable and do not participate in memory expiry.
 | `/gwd-today` | fast daily plan |
 | `/gwd-next` | choose executable next actions now |
 | `/gwd-start` | break one action into steps |
-| `/gwd-done` | log completion and update task state |
+| `/gwd-done` | log completion and update task state; also route natural completion intents here |
 | `/gwd-project` | create or review a project |
 | `/gwd-areas` | review areas of focus and responsibility |
 | `/gwd-goals` | define/review goals for 3 months-2 years |
@@ -207,7 +207,7 @@ Daily logs are immutable and do not participate in memory expiry.
 | `/gwd-weekly` | full weekly review |
 | `/gwd-reset` | safe reset or archive flow |
 
-If the mode is unclear, route by intent and state the chosen mode in one line.
+If the mode is unclear, route by intent and state the chosen mode in one line. Completion intents such as "marcar próxima ação como concluída", "concluir <ação>", "terminei <ação>", or "done <ação>" use the Done workflow even without `/gwd-done`.
 
 ## Summary workflow
 
@@ -583,11 +583,12 @@ Do not create a new planning project when the user needs to act. Make the next m
 
 ## Done workflow
 
-Use for `/gwd-done`.
+Use for `/gwd-done` and natural completion intents such as "marcar próxima ação como concluída", "concluir <ação>", "terminei <ação>", or "done <ação>".
 
 - Add a timestamped daily log entry for every completed action.
 - If it was a 2-minute inbox item, log completion and remove it from `inbox.md`.
 - If it was an open next action, remove its table row from `next-actions.md`; do not keep completed actions there.
+- Treat `next-actions.md` as the active execution list only; completion history belongs in `daily/YYYY-MM-DD.md`.
 - If it was a project action, move/record it under the project's Done section when present, then propose or create the next action.
 - If it completes the project, update `projects.md`; archive `projects/active/<slug>/` only after confirmation.
 - Summarize briefly.

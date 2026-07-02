@@ -1,5 +1,5 @@
 ---
-description: GWD router for capture, planning, review, and next actions.
+description: GWD router for capture, planning, review, next actions, and completions.
 argument-hint: "[request]"
 skills: gwd
 ---
@@ -16,3 +16,5 @@ Antes de ler markdown completo, rode:
 ```
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
+
+Roteamento: se o pedido for marcar/concluir/registrar uma próxima ação como feita (ex.: "terminei X", "marcar X como concluída"), use modo done mesmo sem `/gwd-done`.

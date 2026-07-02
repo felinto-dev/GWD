@@ -11,7 +11,7 @@
         GET WORK DONE
 ```
 
-GWD e um metodo de organizacao e execucao para tirar compromissos da cabeca, transformar ideias em proximas acoes e manter a vida em movimento.
+GWD e um metodo de organização e execucao para tirar compromissos da cabeca, transformar ideias em próximas ações e manter a vida em movimento.
 
 Ele combina dois movimentos:
 
@@ -68,7 +68,7 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 ```text
 ./
 |-- inbox.md                  # tabela de capturas com titulo e descricao
-|-- next-actions.md           # H0 proximas acoes
+|-- next-actions.md           # H0 próximas ações
 |-- projects.md               # H1 projetos
 |-- areas.md                  # H2 areas de foco
 |-- goals.md                  # H3 metas e objetivos
@@ -144,7 +144,7 @@ open loops -> actions -> projects -> areas -> goals -> vision -> purpose
 
 ## Alinhamento
 
-`/gwd-align` checa se uma acao, projeto ou objetivo conversa com os horizontes superiores.
+`/gwd-align` checa se uma ação, projeto ou objetivo conversa com os horizontes superiores.
 
 `horizons.md` e um snapshot derivado da piramide. Ele deve ser atualizado por `/gwd-horizons`, `/gwd-align all`, final do setup, revisoes mensal/trimestral, e mudancas grandes em areas/metas/visao/proposito/projetos.
 
@@ -154,7 +154,7 @@ open loops -> actions -> projects -> areas -> goals -> vision -> purpose
 /gwd-align all
 ```
 
-Ele tambem deve rodar automaticamente em:
+Ele também deve rodar automaticamente em:
 
 ```text
 /gwd-project
@@ -186,7 +186,7 @@ Shutdown
 ```text
 /gwd-weekly
   -> inbox zero
-  -> projetos com proxima acao
+  -> projetos com próxima ação
   -> waiting-for revisado
   -> areas conferidas
   -> foco da semana definido
@@ -199,7 +199,7 @@ Shutdown
   -> areas + metas + alinhamento dos projetos
 
 /gwd-review quarterly
-  -> metas + visao + proposito + simplificacao
+  -> metas + visao + proposito + simplificação
 ```
 
 ## Comandos
@@ -213,9 +213,9 @@ Shutdown
 /gwd-process   processa o inbox
 /gwd-plan      planeja dia ou semana
 /gwd-today     cria plano diario compacto
-/gwd-next      escolhe a melhor proxima acao
-/gwd-start     quebra uma acao em passos executaveis
-/gwd-done      registra conclusao
+/gwd-next      escolhe a melhor próxima ação
+/gwd-start     quebra uma ação em passos executaveis
+/gwd-done      registra conclusão; também por intenção natural
 /gwd-project   cria/revisa projeto
 /gwd-areas     revisa areas de foco
 /gwd-goals     revisa metas 3 meses-2 anos
@@ -228,5 +228,5 @@ Shutdown
 /gwd-review    roda revisao diaria/semanal/mensal/trimestral
 /gwd-weekly    roda revisao semanal completa
 /gwd-sweep     faz varredura mental por horizontes
-/gwd-reset     arquiva/reseta com confirmacao segura
+/gwd-reset     arquiva/reseta com confirmação segura
 ```

@@ -22,7 +22,7 @@ Recommended areas:
 - trabalho -> aparece como responsabilidade principal
 - saude -> energia sustenta execucao
 - familia -> compromissos recorrentes precisam de visibilidade
-- projetos pessoais -> separar ambicoes de obrigacoes
+- projetos pessoais -> separar ambicoes de obrigações
 
 Questions:
 1. Essas areas representam bem sua vida hoje?
@@ -108,7 +108,7 @@ Questions:
 1. Posso mapear a coluna `project` para projetos ativos?
    Recommended: sim -> preserva agrupamentos existentes.
 2. Itens com tag `waiting` devem ir para `waiting-for.md`?
-   Recommended: sim -> sao dependencias, nao proximas acoes.
+   Recommended: sim -> sao dependencias, nao próximas ações.
 3. Itens sem projeto devem ir primeiro para `inbox.md`?
    Recommended: sim -> precisam ser esclarecidos antes de organizar.
 
@@ -132,9 +132,9 @@ Focus: avancar projeto X sem exigir alta energia.
 Capacity: 2h, energy low
 
 1. @low-energy revisar ultimo estado do projeto X (15m)
-2. @computer executar menor proxima acao desbloqueadora (45m)
-3. @phone enviar atualizacao para pessoa envolvida (10m)
-4. @low-energy registrar proxima acao clara (10m)
+2. @computer executar menor próxima ação desbloqueadora (45m)
+3. @phone enviar atualização para pessoa envolvida (10m)
+4. @low-energy registrar próxima ação clara (10m)
 
 First move: abrir o arquivo do projeto X e escrever "estado atual" em 3 bullets.
 ```
@@ -223,7 +223,29 @@ Recommendation:
 ```
 
 
-## 8. Token-saving next query
+## 8. Natural done intent
+
+User:
+
+```text
+marcar a próxima ação "enviar proposta revisada" como concluída
+```
+
+Assistant:
+
+```markdown
+Done -> enviar proposta revisada
+
+Updated:
+- logged completion in `daily/YYYY-MM-DD.md`
+- removed the open row from `next-actions.md`
+- checked whether the linked project needs a new next action
+
+Proxima ação do projeto: revisar retorno do cliente quando chegar.
+```
+
+
+## 9. Token-saving next query
 
 User:
 
@@ -247,10 +269,10 @@ Recommended: na:24 because it matches context/time/energy.
 1. @computer revisar proposta (25m) -> Client project
 2. @computer limpar inbox de notas (15m) -> Admin
 
-Comecar por qual acao?
+Comecar por qual ação?
 ```
 
-## 9. Token-saving weekly review
+## 10. Token-saving weekly review
 
 User:
 
@@ -283,7 +305,7 @@ Comecar pelo inbox?
 ```
 
 
-## 10. Summary dashboard
+## 11. Summary dashboard
 
 User:
 
