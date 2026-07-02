@@ -506,11 +506,13 @@ Use for `/gwd-process`.
 2. Process top-down unless user gave a scope.
 3. Show one item at a time, or a small numbered batch if the user asks for batch triage.
 4. Before asking any destination question, display the item title and, when present, its description in the question itself or its visible context. Do not include the ID unless it helps disambiguate duplicate titles. Do not mention the description when it is empty. The user must know exactly what they are confirming without relying on previous messages.
-5. For each item, ask the user to choose or confirm the destination before editing any file.
-6. Include a recommended destination and the reason when useful, but treat it as a suggestion only.
-7. After user confirmation, update the destination file, then remove the row from `inbox.md`; do not mark inbox rows as done.
-8. Stop when waiting for the user's answer, blocked by missing info, user time limit, or inbox zero.
-9. Summarize confirmed moves and remaining inbox count.
+5. This also applies when presenting the next item after a move: show the next item's title and description before recommending a destination. Do not collapse described items to title-only prompts.
+6. For long descriptions, show a useful concise version that preserves the decision-relevant details; if the user asks or the destination decision depends on details, show the full description before asking.
+7. For each item, ask the user to choose or confirm the destination before editing any file.
+8. Include a recommended destination and the reason when useful, but treat it as a suggestion only.
+9. After user confirmation, update the destination file, then remove the row from `inbox.md`; do not mark inbox rows as done.
+10. Stop when waiting for the user's answer, blocked by missing info, user time limit, or inbox zero.
+11. Summarize confirmed moves and remaining inbox count.
 
 Do not batch-delete inbox content without preserving the moved decisions. Do not infer permission from obvious wording; ask first.
 
