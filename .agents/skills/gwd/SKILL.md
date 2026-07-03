@@ -388,6 +388,9 @@ Recommendation:
 
 Use for `/gwd-capture` and any raw input.
 
+- Capture first; do not interview the user before saving when the raw input is enough to create a title and description.
+- Do not ask refinement questions during capture: desired outcome, why it matters, boundaries, next visible action, done state, priority, project, context, or improved wording belong to `/gwd-refine`, `/gwd-clarify`, or `/gwd-process`.
+- Ask before saving only when there is no item to capture or the input is too ambiguous to create a row.
 - Add each item as one row in the `inbox.md` table with stable `ID` and `Added` timestamp.
 - Generate `ID` once when capturing, using `in-YYYYMMDD-HHMMSS-NNN`; never regenerate existing IDs.
 - `Added` is the local date and time when the item entered inbox.
@@ -398,15 +401,30 @@ Use for `/gwd-capture` and any raw input.
 - If an item takes less than 2 minutes, do it now and log it instead of keeping it in inbox.
 - Escape literal pipes as `\|` inside table cells.
 - Do not decide project/context unless the user asks or the item is unambiguous.
-- If writing is not possible, return a capture block the user can paste.
+- After a successful write, show the exact saved `ID`, `Added`, `Title`, `Description`, and file path. Use `-` for an empty description.
+- If writing is not possible, return a capture block the user can paste and include the proposed title and description.
 
 Capture format:
 
 ```markdown
 | ID | Added | Title | Description |
 |---|---|---|---|
-| in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Titulo da captura | detalhes opcionais preservados do pedido original |
+| in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Título da captura | detalhes opcionais preservados do pedido original |
 ```
+
+Response after saving one item:
+
+```markdown
+Capture -> inbox
+
+ID: in-YYYYMMDD-HHMMSS-001
+Added: YYYY-MM-DD HH:MM
+Título: Título da captura
+Descrição: detalhes opcionais preservados do pedido original
+Arquivo: `inbox.md`
+```
+
+For multiple captured items, show one compact row per item with the saved title and description.
 
 ## Clarify workflow
 
