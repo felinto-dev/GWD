@@ -48,7 +48,7 @@ Ele combina dois movimentos:
                  +--------------------------------+
 ```
 
-A pratica recomendada e de baixo para cima: primeiro controle o que esta incomodando, depois suba para as decisoes maiores.
+A prática recomendada é de baixo para cima: primeiro controle o que está incomodando, depois suba para as decisões maiores.
 
 ## Workflow + comandos
 
@@ -56,26 +56,26 @@ A pratica recomendada e de baixo para cima: primeiro controle o que esta incomod
 |---|---|---|
 | Summary | Ver painel geral bonito | `/gwd-summary` |
 | Setup | Montar sistema e primeiro sweep | `/gwd-setup` |
-| Capture | Tirar tudo da cabeca | `/gwd-capture`, `/gwd-sweep` |
-| Clarify | Decidir o que cada item significa | `/gwd-clarify`, `/gwd-process` |
+| Capture | Tirar tudo da cabeça | `/gwd-capture`, `/gwd-sweep` |
+| Clarify | Decidir o que cada item significa | `/gwd-clarify`, `/gwd-refine`, `/gwd-process` |
 | Organize | Colocar cada coisa no lugar certo | `/gwd-process`, `/gwd-project`, `/gwd-waiting`, `/gwd-someday` |
-| Reflect | Revisar e manter confianca | `/gwd-review`, `/gwd-weekly`, `/gwd-horizons` |
+| Reflect | Revisar e manter confiança | `/gwd-review`, `/gwd-weekly`, `/gwd-horizons` |
 | Engage | Escolher e executar | `/gwd-today`, `/gwd-plan`, `/gwd-next`, `/gwd-start`, `/gwd-done` |
-| Align | Checar coerencia vertical | `/gwd-align` |
+| Align | Checar coerência vertical | `/gwd-align` |
 
 ## Arquivos principais
 
 ```text
 ./
-|-- inbox.md                  # tabela de capturas com titulo e descricao
+|-- inbox.md                  # tabela de capturas com título e descrição
 |-- next-actions.md           # H0 próximas ações
 |-- projects.md               # H1 projetos
-|-- areas.md                  # H2 areas de foco
+|-- areas.md                  # H2 áreas de foco
 |-- goals.md                  # H3 metas e objetivos
-|-- vision.md                 # H4 visao 3-5 anos
-|-- purpose.md                # H5 proposito e principios
+|-- vision.md                 # H4 visão 3-5 anos
+|-- purpose.md                # H5 propósito e princípios
 |-- horizons.md               # mapa geral
-|-- gwd-memory.md             # memoria operacional
+|-- gwd-memory.md             # memória operacional
 |-- waiting-for.md
 |-- someday-maybe.md
 |-- calendar.md
@@ -99,13 +99,13 @@ A skill inclui scripts read-only para consultar o sistema sem carregar arquivos 
 .agents/skills/gwd/scripts/gwd-query review --root . --type weekly
 ```
 
-Regra: usar `gwd-query` para resumos; ler markdown completo so antes de editar, quando houver ambiguidades, ou quando voce pedir detalhes integrais.
+Regra: usar `gwd-query` para resumos; ler markdown completo só antes de editar, quando houver ambiguidades, ou quando você pedir detalhes integrais.
 
-Padrao dos arquivos: `SCHEMA.md`.
+Padrão dos arquivos: `SCHEMA.md`.
 
 ## Summary
 
-Use `/gwd-summary` para um painel visual das tarefas principais, estado dos horizontes, projetos com problemas, follow-ups vencidos, gaps e proximo comando.
+Use `/gwd-summary` para um painel visual das tarefas principais, estado dos horizontes, projetos com problemas, follow-ups vencidos, gaps e próximo comando.
 
 ```text
 /gwd-summary
