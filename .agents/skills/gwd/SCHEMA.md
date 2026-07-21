@@ -19,6 +19,7 @@ inbox.md
 next-actions.md
 projects.md
 areas.md
+contexts.md
 goals.md
 vision.md
 purpose.md
@@ -108,14 +109,35 @@ Rules:
 - Remove only after confirmation; archive under `## Arquivadas` when context may remain useful.
 - Daily logs are immutable and separate from memory expiry.
 
+## `contexts.md`
+
+Canonical table of user-defined identifiable places and situations. It starts empty:
+
+```markdown
+| Contexto | Definição | Sinais fortes | Sinais auxiliares | Capacidades | Restrições | Estado |
+|---|---|---|---|---|---|---|
+```
+
+Rules:
+
+- Do not prepopulate rows. Every entry comes from the user.
+- `Contexto`, `Definição`, and `Estado` are required for each user-created row.
+- Context keys use `@[-A-Za-z0-9_./]+` and are unique.
+- States are `ativo` or `arquivado`.
+- Strong signals require user confirmation. Auxiliary signals are hypotheses.
+- Renames and merges update all canonical references after confirmation.
+- Archived contexts cannot be assigned to new actions.
+- Generic labels in open actions do not need corresponding rows and produce no missing-context warning.
+- Open actions referencing archived user-defined contexts produce warnings.
+
 ## `next-actions.md`
 
 Canonical next-action table:
 
 ```markdown
-| ID | Added | Title | Description | Context |
-|---|---|---|---|---|
-| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Review proposal | Project/area, notes, or useful detail | @computer |
+| ID | Added | Title | Description | Context | Time | Energy |
+|---|---|---|---|---|---|---|
+| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Review proposal | Project/area, notes, or useful detail | @computer | 30 | high |
 ```
 
 Fields:
@@ -127,6 +149,8 @@ Fields:
 | Title | yes | `Review proposal` |
 | Description | optional | `Project/area: Client project` |
 | Context | yes | `@computer`, `@phone`, `@splita` |
+| Time | optional | minutes as `30` or `(30m)` |
+| Energy | optional | `low`, `medium`, `high` |
 
 Rules:
 
@@ -267,6 +291,7 @@ gwd-query status   --root .
 gwd-query summary  --root . --format md
 gwd-query inbox    --root . --limit 20
 gwd-query next     --root . --context @computer --time 30 --energy low
+gwd-query contexts --root .
 gwd-query projects --root . --missing-next
 gwd-query horizons --root .
 gwd-query review   --root . --type weekly

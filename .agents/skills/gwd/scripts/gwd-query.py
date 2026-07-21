@@ -22,6 +22,7 @@ BASE_FILES = [
     "next-actions.md",
     "projects.md",
     "areas.md",
+    "contexts.md",
     "goals.md",
     "vision.md",
     "purpose.md",
@@ -351,6 +352,14 @@ def parse_next_actions_table(text: str) -> List[Dict[str, Any]]:
         action_id = normalize_key(row, "ID", "Id", "Next ID", "NextID") or f"na:{line}"
         added = normalize_key(row, "Added", "Adicionado", "Date", "Data") or None
         description = normalize_key(row, "Description", "Descricao", "Descrição", "Notes", "Notas") or None
+        minutes_value = normalize_key(row, "Time", "Tempo", "Minutes", "Minutos")
+        minutes = parse_minutes(minutes_value) if minutes_value else None
+        if minutes is None and minutes_value:
+            try:
+                minutes = int(minutes_value)
+            except ValueError:
+                minutes = None
+        energy = normalize_key(row, "Energy", "Energia").lower() or None
         items.append(
             {
                 "id": action_id,
@@ -363,7 +372,8 @@ def parse_next_actions_table(text: str) -> List[Dict[str, Any]]:
                 "title": title,
                 "description": description,
                 "added": added,
-                "minutes": None,
+                "minutes": minutes,
+                "energy": energy,
                 "link": "",
                 "raw": row.get("_raw", ""),
             }
@@ -563,6 +573,64 @@ def query_inbox(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     return result
 
 
+def parse_contexts(ctx: Ctx) -> List[Dict[str, Any]]:
+    text = ctx.read_text("contexts.md")
+    contexts: List[Dict[str, Any]] = []
+    seen = set()
+    for row in parse_markdown_table(text):
+        name = normalize_key(row, "Context", "Contexto")
+        if not name:
+            continue
+        if not CONTEXT_RE.fullmatch(name):
+            ctx.warnings.append(f"invalid context at contexts.md:{row.get('_line')}: {name}")
+        if name in seen:
+            ctx.warnings.append(f"duplicate context at contexts.md:{row.get('_line')}: {name}")
+        seen.add(name)
+        contexts.append(
+            {
+                "context": name,
+                "definition": normalize_key(row, "Definition", "Definicao", "Definição"),
+                "strong_signals": normalize_key(row, "Strong signals", "Sinais fortes"),
+                "auxiliary_signals": normalize_key(row, "Auxiliary signals", "Sinais auxiliares"),
+                "capabilities": normalize_key(row, "Capabilities", "Capacidades"),
+                "constraints": normalize_key(row, "Constraints", "Restricoes", "Restrições"),
+                "status": (normalize_key(row, "Status", "State", "Estado") or "active").lower(),
+                "line": int(row.get("_line", "0") or 0),
+            }
+        )
+    return contexts
+
+
+def query_contexts(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
+    contexts = parse_contexts(ctx)
+    actions = [item for item in parse_next_actions(ctx) if not item.get("done")]
+    usage: Dict[str, int] = {}
+    for action in actions:
+        name = action.get("context")
+        if name:
+            usage[name] = usage.get(name, 0) + 1
+    known = {item["context"] for item in contexts}
+    archived = {item["context"] for item in contexts if item["status"] in {"archived", "inactive", "arquivado", "inativo"}}
+    for item in contexts:
+        item["open_actions"] = usage.get(item["context"], 0)
+    archived_references = [{"context": name, "open_actions": usage[name]} for name in sorted(archived) if usage.get(name)]
+    result = base_result("contexts", ctx)
+    result.update(
+        {
+            "counts": {
+                "total": len(contexts),
+                "active": sum(1 for item in contexts if item["status"] in {"active", "ativo"}),
+                "archived": len(archived),
+                "archived_references": len(archived_references),
+            },
+            "contexts": contexts[: args.limit],
+            "archived_references": archived_references,
+            "next_command": "/gwd-contexts review" if archived_references else "/gwd-next",
+        }
+    )
+    return result
+
+
 def query_next(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
     items = [i for i in parse_next_actions(ctx) if not i.get("done")]
     filtered = []
@@ -573,7 +641,10 @@ def query_next(ctx: Ctx, args: argparse.Namespace) -> Dict[str, Any]:
             continue
         if args.time is not None and item.get("minutes") is not None and item["minutes"] > args.time:
             continue
-        if args.energy == "low" and item.get("context") == "@deep":
+        item_energy = item.get("energy")
+        if args.energy == "low" and (item_energy == "high" or item.get("context") == "@deep"):
+            continue
+        if args.energy == "medium" and item_energy == "high":
             continue
         filtered.append(item)
     if any(item.get("priority") for item in filtered):
@@ -1061,11 +1132,11 @@ def output_md(result: Dict[str, Any]) -> None:
         print("\nStatus:")
         for k, v in result["status"].items():
             print(f"- {k}: {v}")
-    items = result.get("items") or result.get("projects") or []
+    items = result.get("items") or result.get("contexts") or result.get("projects") or []
     if items:
         print("\nItems:")
         for item in items[:10]:
-            label = item.get("text") or item.get("name") or item.get("item") or item.get("raw")
+            label = item.get("text") or item.get("context") or item.get("name") or item.get("item") or item.get("raw")
             print(f"- {item.get('id', '')}: {label}")
     if result.get("gaps"):
         print("\nGaps:")
@@ -1081,7 +1152,7 @@ def output_md(result: Dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Query GWD markdown files without reading them into the agent context.")
-    parser.add_argument("mode", choices=["status", "summary", "inbox", "next", "projects", "horizons", "memory", "review", "align", "waiting", "someday"])
+    parser.add_argument("mode", choices=["status", "summary", "inbox", "next", "contexts", "projects", "horizons", "memory", "review", "align", "waiting", "someday"])
     parser.add_argument("extra", nargs="*", help="extra words for align/item queries")
     parser.add_argument("--root", default=".", help="GWD workspace root")
     parser.add_argument("--format", choices=["json", "md", "ndjson"], default="json")
@@ -1107,6 +1178,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "summary": query_summary,
         "inbox": query_inbox,
         "next": query_next,
+        "contexts": query_contexts,
         "projects": query_projects,
         "horizons": query_horizons,
         "memory": query_memory,

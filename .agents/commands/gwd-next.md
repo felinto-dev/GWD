@@ -1,6 +1,6 @@
 ---
 description: Choose the best GWD next action available now.
-argument-hint: "[context, time, energy]"
+argument-hint: "[restrições ou preferências atuais]"
 skills: gwd
 ---
 Use a skill `gwd` em modo next.
@@ -8,12 +8,15 @@ Use a skill `gwd` em modo next.
 Argumentos:
 $ARGUMENTS
 
-Token-saver:
-Antes de ler markdown completo, rode:
+Antes da entrevista, colete sinais transitórios e consulte contextos e ações:
 
 ```text
+.agents/skills/gwd/scripts/gwd-context
+.agents/skills/gwd/scripts/gwd-query contexts --root . --format json
 .agents/skills/gwd/scripts/gwd-query next --root . --format json
 ```
+
+Mostre o contexto inferido, as evidências e a confiança antes de recomendar. Dê oportunidade para correção. Faça somente perguntas adaptativas cuja resposta possa mudar a escolha.
 
 Leia arquivos completos so para editar, resolver warnings, ou quando o usuario pedir detalhe integral.
 

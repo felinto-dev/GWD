@@ -58,7 +58,7 @@ A prática recomendada é de baixo para cima: primeiro controle o que está inco
 | Setup | Montar sistema e primeiro sweep | `/gwd-setup` |
 | Capture | Tirar tudo da cabeça | `/gwd-capture`, `/gwd-sweep` |
 | Clarify | Decidir o que cada item significa | `/gwd-clarify`, `/gwd-refine`, `/gwd-process` |
-| Organize | Colocar cada coisa no lugar certo | `/gwd-process`, `/gwd-project`, `/gwd-waiting`, `/gwd-someday` |
+| Organize | Colocar cada coisa no lugar certo | `/gwd-process`, `/gwd-project`, `/gwd-contexts`, `/gwd-waiting`, `/gwd-someday` |
 | Reflect | Revisar e manter confiança | `/gwd-review`, `/gwd-weekly`, `/gwd-horizons` |
 | Engage | Escolher e executar | `/gwd-today`, `/gwd-plan`, `/gwd-next`, `/gwd-start`, `/gwd-done` |
 | Align | Checar coerência vertical | `/gwd-align` |
@@ -71,6 +71,7 @@ A prática recomendada é de baixo para cima: primeiro controle o que está inco
 |-- next-actions.md           # H0 próximas ações
 |-- projects.md               # H1 projetos
 |-- areas.md                  # H2 áreas de foco
+|-- contexts.md               # locais/situações definidos pelo usuário e seus sinais
 |-- goals.md                  # H3 metas e objetivos
 |-- vision.md                 # H4 visão 3-5 anos
 |-- purpose.md                # H5 propósito e princípios
@@ -95,6 +96,8 @@ A skill inclui scripts read-only para consultar o sistema sem carregar arquivos 
 .agents/skills/gwd/scripts/gwd-query summary --root . --format md
 .agents/skills/gwd/scripts/gwd-query status --root . --format json
 .agents/skills/gwd/scripts/gwd-query next --root . --context @computer --time 30
+.agents/skills/gwd/scripts/gwd-query contexts --root .
+.agents/skills/gwd/scripts/gwd-context
 .agents/skills/gwd/scripts/gwd-query horizons --root .
 .agents/skills/gwd/scripts/gwd-query review --root . --type weekly
 ```
@@ -213,7 +216,8 @@ Shutdown
 /gwd-process   processa o inbox
 /gwd-plan      planeja dia ou semana
 /gwd-today     cria plano diario compacto
-/gwd-next      escolhe a melhor próxima ação
+/gwd-next      infere o contexto e escolhe a melhor próxima ação
+/gwd-contexts  gerencia contextos de execução e sinais
 /gwd-start     quebra uma ação em passos executaveis
 /gwd-done      registra conclusão; também por intenção natural
 /gwd-project   cria/revisa projeto

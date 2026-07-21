@@ -60,6 +60,7 @@ Use this structure when setting up or maintaining the system:
 |-- next-actions.md
 |-- projects.md
 |-- areas.md
+|-- contexts.md
 |-- goals.md
 |-- vision.md
 |-- purpose.md
@@ -94,6 +95,7 @@ Canonical files are the source of truth. Derived files are dashboards, logs, or 
 | `projects/active/<slug>/` | canonical project detail | `/gwd-project`, project review, project completion/archive |
 | `projects.md` | dashboard | project created/paused/archived, next action changes, weekly review |
 | `areas.md` | canonical areas + standards | setup/sweep, `/gwd-areas`, monthly review, project assigned to a new area |
+| `contexts.md` | canonical user-defined identifiable places/situations + signals | setup/sweep, `/gwd-contexts`, confirmed context discovery or rename |
 | `goals.md` | canonical goals | `/gwd-goals`, monthly/quarterly review, project linked/unlinked to a goal |
 | `vision.md` | canonical vision | `/gwd-vision`, quarterly review |
 | `purpose.md` | canonical principles | `/gwd-purpose`, quarterly review |
@@ -131,6 +133,8 @@ Prefer scripts for read-only summaries:
 | overall status | `gwd-query status --root .` |
 | inbox items | `gwd-query inbox --root . --limit 20` |
 | next actions | `gwd-query next --root . --context @computer --time 30 --energy low` |
+| execution contexts | `gwd-query contexts --root .` |
+| current environment signals | `gwd-context` |
 | project health | `gwd-query projects --root . --missing-next` |
 | horizons map | `gwd-query horizons --root .` |
 | operating memory | `gwd-query memory --root .` |
@@ -198,6 +202,7 @@ Daily logs are immutable and do not participate in memory expiry.
 | `/gwd-done` | log completion and update task state; also route natural completion intents here |
 | `/gwd-project` | create or review a project |
 | `/gwd-areas` | review areas of focus and responsibility |
+| `/gwd-contexts` | manage execution contexts and identification signals |
 | `/gwd-goals` | define/review goals for 3 months-2 years |
 | `/gwd-vision` | define/review 3-5 year vision |
 | `/gwd-purpose` | define/review purpose and principles |
@@ -576,20 +581,49 @@ Inputs to consider:
 
 Daily plan should be small enough to finish. Prefer 1 main outcome, 2-4 next actions, and a shutdown note.
 
+## Context workflow
+
+Use `/gwd-contexts` to manage `contexts.md`.
+
+- Without arguments, show user-defined active and archived identifiable contexts, their signals, matching open-action counts, and archived references. An empty list is valid.
+- Support list, review, add, edit, rename, merge, and archive intents.
+- Keep `@name` stable and unique. Entries describe user-defined places or situations that can be inferred from signals, such as home or work.
+- Do not prepopulate entries. The user builds this list explicitly.
+- Generic action labels such as `@phone`, `@computer`, `@online`, or project-specific labels may exist only in `next-actions.md`. Do not report them as missing, invalid, or requiring registration in `contexts.md`.
+- Treat user-confirmed hostname or location associations as strong signals. Treat IP geolocation, network organization, device hints, and time as auxiliary signals.
+- Before rename, merge, or archive, read affected canonical files, show every impacted reference, and ask for confirmation.
+- Update canonical references after confirmation, preserve action IDs, and log changes in `daily/YYYY-MM-DD.md`.
+- Do not archive a context referenced by open actions until those actions are reassigned.
+
 ## Engage workflow
 
 Use for `/gwd-next` and decision support.
 
-Filter next actions in this order:
+1. Query all open actions and `contexts.md` before reading full files.
+2. Run `scripts/gwd-context` to collect transient hostname and approximate internet-exit location. Network failure must not block selection.
+3. Infer likely contexts from explicit arguments, confirmed context signals, current capabilities, hostname, and approximate network location. Explicit user input outranks every inferred signal.
+4. Always show the inferred context before recommending work. Include concise evidence and confidence; never show or persist the raw IP.
+5. Give the user an explicit opportunity to correct the inferred context. If VPN, proxy, relay, hosting, network mobility, conflicting signals, or low confidence is detected, explain the uncertainty and ask for the real context or location.
+6. Interview adaptively, one question at a time. Do not use a fixed questionnaire. Ask only for the unknown condition with the greatest chance of changing the candidate set or ranking, such as time, energy, available tools, location, urgency, or desired momentum.
+7. Stop interviewing once further answers would not materially change the recommendation.
+8. Filter next actions in this order: context, time, energy, consequence/urgency, alignment with areas/goals, momentum.
+9. Unknown time or energy requirements remain eligible but must be identified as uncertain; do not silently discard them.
+10. Return at most 3 options and recommend one with the selection reason.
 
-1. Context available now.
-2. Time available now.
-3. Energy available now.
-4. Consequence / urgency.
-5. Alignment with areas/goals.
-6. Momentum.
+Response shape:
 
-Return 3-7 options max. Recommend one.
+```markdown
+Next -> contexto inferido
+
+Contexto: <@context or uncertain>
+Evidências: <signals without raw IP>
+Confiança: alta | média | baixa
+Observação: <VPN/proxy/network caveat when relevant>
+
+Correção: informe qualquer ajuste; caso esteja correto, confirme.
+```
+
+After confirmation or sufficient correction, continue the adaptive interview or recommendation.
 
 ## Start workflow
 

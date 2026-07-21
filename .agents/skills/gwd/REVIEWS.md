@@ -118,6 +118,7 @@ Checklist:
    - Review `calendar.md` past 7 days and next 14 days.
    - Review `waiting-for.md` and create follow-ups.
    - Review `next-actions.md` by context.
+   - Review `contexts.md` for archived or obsolete user-defined contexts.
 3. Review projects:
    - Every active project has a clear outcome.
    - Every active project has at least one next action.

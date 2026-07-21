@@ -18,6 +18,18 @@ Raw captures. Process top-down. Preserve original wording.
 | in-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Example title | Optional details, context, links, or notes |
 ```
 
+### `contexts.md`
+
+```markdown
+# Contextos identificáveis
+
+Locais e situações cadastrados pelo usuário para inferir onde ele está agora.
+Etiquetas genéricas de ações não precisam aparecer nesta lista.
+
+| Contexto | Definição | Sinais fortes | Sinais auxiliares | Capacidades | Restrições | Estado |
+|---|---|---|---|---|---|---|
+```
+
 ### `next-actions.md`
 
 ```markdown
@@ -25,9 +37,9 @@ Raw captures. Process top-down. Preserve original wording.
 
 Canonical list of single visible physical actions.
 
-| ID | Added | Title | Description | Context |
-|---|---|---|---|---|
-| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Call Ana about contract | Project/area, notes, or useful detail | @phone |
+| ID | Added | Title | Description | Context | Time | Energy |
+|---|---|---|---|---|---|---|
+| na-YYYYMMDD-HHMMSS-001 | YYYY-MM-DD HH:MM | Call Ana about contract | Project/area, notes, or useful detail | @phone | 15 | low |
 ```
 
 ### `projects.md`
@@ -467,11 +479,4 @@ Next action: <new action or none>
 
 ## Context guide
 
-- `@computer`: any computer work.
-- `@phone`: calls or messages.
-- `@errand`: outside/home logistics.
-- `@home`: physical home tasks.
-- `@office`: workplace-only tasks.
-- `@deep`: focus, high cognition.
-- `@low-energy`: admin or simple tasks.
-- `@agenda-name`: discuss with a person.
+Use `contexts.md` only for user-defined places or situations identifiable from signals. Keep it empty until the user adds entries. Generic action labels remain valid without registration. Manage entries through `/gwd-contexts`.

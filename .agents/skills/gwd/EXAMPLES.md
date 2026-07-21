@@ -245,7 +245,48 @@ Proxima ação do projeto: revisar retorno do cliente quando chegar.
 ```
 
 
-## 9. Token-saving next query
+## 9. Adaptive next-action interview
+
+User:
+
+```text
+/gwd-next
+```
+
+Assistant internal first steps:
+
+```text
+.agents/skills/gwd/scripts/gwd-context
+.agents/skills/gwd/scripts/gwd-query contexts --root . --format json
+.agents/skills/gwd/scripts/gwd-query next --root . --format json
+```
+
+Assistant:
+
+```markdown
+Next -> contexto inferido
+
+Contexto: @computer, provavelmente @home
+Evidências: hostname conhecido; saída da rede próxima ao local associado a @home
+Confiança: média
+Observação: a localização da rede é aproximada.
+
+Correção: informe qualquer ajuste; caso esteja correto, confirme.
+```
+
+If the provider indicates VPN/proxy or signals conflict, say so and ask for the actual context. After correction, ask only the highest-value missing question; do not run a fixed questionnaire.
+
+## 10. Manage contexts
+
+```text
+/gwd-contexts
+/gwd-contexts adicionar @studio
+/gwd-contexts renomear @office @work
+```
+
+The file starts empty. The user may add identifiable places such as home or work and their signals. Generic labels such as `@phone` remain valid without registration. Rename and merge operations preview affected actions and require confirmation.
+
+## 11. Token-saving next query
 
 User:
 
