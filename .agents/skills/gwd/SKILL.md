@@ -468,7 +468,9 @@ Intent:
 - Make existing items easier to understand later.
 - Preserve each item's ID, date, status, context, review date, blockers, and canonical location.
 - Improve only the title and description unless the user explicitly asks for another change.
-- Keep inbox refinement separate from inbox processing: refining does not move, delete, prioritize, or mark items done.
+- Keep inbox refinement separate from inbox processing: refining does not move, prioritize, or mark items done.
+- If the user no longer wants the item, allow deletion inside refinement only after explicit confirmation.
+- Always display the raw, complete title and description. Never summarize, abbreviate, truncate, omit text, or replace text with ellipses.
 
 Supported item locations:
 
@@ -485,26 +487,33 @@ Workflow:
 1. Identify the item or scope to refine. Prefer an explicit item ID, except that `/gwd-refine inbox` means the inbox-refinement queue. If the user omits the ID but the immediately preceding assistant turn mentioned exactly one item/action/project, infer that item and state the inference. If context names multiple possible items or the last mentioned item is not clear, ask which ID or scope to refine.
 2. Establish the refinement queue from the item's current position in its canonical list. For `/gwd-refine inbox`, run the inbox query first and start with the newest row by `Added`. For `/gwd-refine <item-id>`, start with that item. In both cases, continue with each immediately following item in the list's current order; never wrap to the beginning or switch lists.
 3. Locate the item from the ID. Prefer prefix-based files first, then search canonical files. If multiple matches exist, show the candidates and ask which one.
-4. Read the full file before editing. Capture the current row/section, title, description, nearby context, and following-item order.
+4. Read the full file before editing. Capture the current row/section, raw complete title, raw complete description, nearby context, and following-item order.
 5. Inspect related local context before asking: project detail files, `projects.md`, linked area/goal, blockers, waiting-for, daily logs, or other tasks with the same project/title words.
-6. Interview until there is shared understanding. Ask one question at a time and wait for the user's answer before continuing.
-7. For every question, include a recommended answer and why. If evidence already answers it, state the inference and ask only for confirmation.
-8. Walk the decision tree in dependency order: what it means -> desired outcome -> why it matters -> boundaries/exclusions -> next visible action or done state -> wording.
-9. Stop interviewing when the improved wording is clear enough to be useful on review day; do not chase perfection.
-10. Show the proposed replacement title and description, then ask for confirmation before editing.
-11. After confirmation, update only the title/description cells or fields in the canonical item. Preserve ID, Added/date, context, review date, blockers, ordering, and surrounding formatting.
-12. After saving, summarize old -> new, then immediately present the next item and begin its refinement without asking whether to continue.
-13. If the user says `pular`, leave the current item unchanged and immediately present the next item. If the user says `parar`, end the queue.
-14. Process exactly one item at a time with separate edit confirmation. When no following item remains, report `Fim da lista` and stop; never continue in another canonical list.
+6. In every item presentation, question, proposal, confirmation, saved result, deletion request, and next-item presentation, display the raw complete title and raw complete description. Do not summarize or shorten either field, even when the description is long.
+7. Interview until there is shared understanding. Ask one question at a time and wait for the user's answer before continuing.
+8. For every question, include a recommended answer and why. If evidence already answers it, state the inference and ask only for confirmation.
+9. Walk the decision tree in dependency order: what it means -> desired outcome -> why it matters -> boundaries/exclusions -> next visible action or done state -> wording.
+10. Stop interviewing when the improved wording is clear enough to be useful on review day; do not chase perfection.
+11. Show the complete proposed replacement title and description, then ask for confirmation before editing.
+12. After confirmation, update only the title/description cells or fields in the canonical item. Preserve ID, Added/date, context, review date, blockers, ordering, and surrounding formatting.
+13. After saving, display the complete old title and description and the complete new title and description, then immediately present the next item and begin its refinement without asking whether to continue.
+14. If the user asks to delete the current item, show its ID, canonical file, raw complete title, and raw complete description, then ask for explicit confirmation. Do not delete before confirmation.
+15. After confirmed deletion, remove only that canonical item, preserve the surrounding order and formatting, and record the ID, canonical location, complete title, complete description, and reason when known in `daily/YYYY-MM-DD.md`. Then immediately present the next item and begin its refinement without asking whether to continue.
+16. If the user says `pular`, leave the current item unchanged and immediately present the next item. If the user says `parar`, end the queue.
+17. Process exactly one item at a time with separate edit or deletion confirmation. When no following item remains, report `Fim da lista` and stop; never continue in another canonical list.
 
 Question shape:
 
 ```markdown
 Refine -> <item-id>
 
-Atual:
-- Título: <current title>
-- Descrição: <current description or ->
+Título atual integral:
+
+<raw complete current title>
+
+Descrição atual integral:
+
+<raw complete current description; use `-` only when the field is empty>
 
 Inferi:
 - <fact from existing tasks/logs/context>
@@ -518,13 +527,44 @@ Confirmation shape before editing:
 ```markdown
 Refine -> proposta
 
-Título: <new title>
-Descrição: <new description>
+Título atual integral:
+
+<raw complete current title>
+
+Descrição atual integral:
+
+<raw complete current description; use `-` only when the field is empty>
+
+Título proposto integral:
+
+<complete new title>
+
+Descrição proposta integral:
+
+<complete new description; use `-` only when the field is empty>
 
 Aplicar esta alteração em `<file>`?
 ```
 
-Do not use `/gwd-refine` to process inbox, change destination, mark done, reprioritize, or create project structure. If the interview reveals that the item belongs elsewhere, recommend `/gwd-clarify` or `/gwd-process` after refining, but do not move it in the same step unless the user explicitly asks.
+Confirmation shape before deletion:
+
+```markdown
+Refine -> excluir `<item-id>`
+
+Arquivo canônico: `<file>`
+
+Título atual integral:
+
+<raw complete current title>
+
+Descrição atual integral:
+
+<raw complete current description; use `-` only when the field is empty>
+
+Confirmar exclusão deste item?
+```
+
+Do not use `/gwd-refine` to process inbox, change destination, mark done, reprioritize, or create project structure. Confirmed deletion of the current item is the only removal allowed in this workflow. If the interview reveals that the item belongs elsewhere, recommend `/gwd-clarify` or `/gwd-process` after refining, but do not move it in the same step unless the user explicitly asks.
 
 ## Process inbox workflow
 
