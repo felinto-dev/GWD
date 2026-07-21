@@ -461,7 +461,7 @@ Do not leave a clarified item only in inbox. Move it to its canonical place or a
 
 ## Refine item workflow
 
-Use for `/gwd-refine <item-id>` when the user wants to improve the title and description of one existing item without moving it. Use `/gwd-refine inbox` to refine inbox items one by one, from newest to oldest by `Added`.
+Use for `/gwd-refine <item-id>` when the user wants to improve the title and description of an existing item without moving it, then continue with the following items in the same canonical list. Use `/gwd-refine inbox` to start with the newest inbox item and continue toward the oldest by `Added`.
 
 Intent:
 
@@ -483,9 +483,9 @@ Supported item locations:
 Workflow:
 
 1. Identify the item or scope to refine. Prefer an explicit item ID, except that `/gwd-refine inbox` means the inbox-refinement queue. If the user omits the ID but the immediately preceding assistant turn mentioned exactly one item/action/project, infer that item and state the inference. If context names multiple possible items or the last mentioned item is not clear, ask which ID or scope to refine.
-2. For `/gwd-refine inbox`, run the inbox query first, select the newest inbox row by `Added`, and present exactly one item. After that item is edited or skipped, offer the next newest remaining item. Do not batch-edit multiple inbox rows in one confirmation.
+2. Establish the refinement queue from the item's current position in its canonical list. For `/gwd-refine inbox`, run the inbox query first and start with the newest row by `Added`. For `/gwd-refine <item-id>`, start with that item. In both cases, continue with each immediately following item in the list's current order; never wrap to the beginning or switch lists.
 3. Locate the item from the ID. Prefer prefix-based files first, then search canonical files. If multiple matches exist, show the candidates and ask which one.
-4. Read the full file before editing. Capture the current row/section, title, description, and nearby context.
+4. Read the full file before editing. Capture the current row/section, title, description, nearby context, and following-item order.
 5. Inspect related local context before asking: project detail files, `projects.md`, linked area/goal, blockers, waiting-for, daily logs, or other tasks with the same project/title words.
 6. Interview until there is shared understanding. Ask one question at a time and wait for the user's answer before continuing.
 7. For every question, include a recommended answer and why. If evidence already answers it, state the inference and ask only for confirmation.
@@ -493,8 +493,9 @@ Workflow:
 9. Stop interviewing when the improved wording is clear enough to be useful on review day; do not chase perfection.
 10. Show the proposed replacement title and description, then ask for confirmation before editing.
 11. After confirmation, update only the title/description cells or fields in the canonical item. Preserve ID, Added/date, context, review date, blockers, ordering, and surrounding formatting.
-12. For `/gwd-refine inbox`, summarize the edited item and ask whether to refine the next inbox item; continue newest-to-oldest until the user stops or inbox is empty.
-13. Summarize old -> new and the file changed.
+12. After saving, summarize old -> new, then immediately present the next item and begin its refinement without asking whether to continue.
+13. If the user says `pular`, leave the current item unchanged and immediately present the next item. If the user says `parar`, end the queue.
+14. Process exactly one item at a time with separate edit confirmation. When no following item remains, report `Fim da lista` and stop; never continue in another canonical list.
 
 Question shape:
 
